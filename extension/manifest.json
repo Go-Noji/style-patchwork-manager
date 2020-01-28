@@ -1,0 +1,30 @@
+{
+	"name": "Botto(temp)",
+	"version": "0.0.1",
+	"description": "botto",
+	"background": {
+		"persistent": false,
+		"scripts": ["background.bundle.js"]
+	},
+	"content_scripts": [{
+		"js": ["page.bundle.js"],
+		"matches": ["http://*/*", "https://*/*"]
+	}],
+	"browser_action": {
+		"default_icon": {
+			"128": "128.png"
+		}
+	},
+	"options_ui": {
+		"page": "options.html",
+		"chrome_style": false,
+		"open_in_tab": true
+	},
+	"icons": {
+		"128": "128.png",
+		"48": "48.png",
+		"32": "32.png"
+	},
+	"permissions": ["activeTab", "tabs", "storage"],
+	"manifest_version": 2
+}

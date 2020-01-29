@@ -75,20 +75,38 @@
     },
     setup(prop: Prop, context: SetupContext) {
       //Coordinates の変更を親へ伝播する
-      const changeCoordinate = (data: {coordinate: Coordinate, index: number}) => {
-        //coordinates のコピーを作成し、対象 index の coordinate のみ書き換える
+      const changeCoordinate = (data: {coordinate: Coordinate | null, index: number}) => {
+        //coordinates のコピーを作成
         const coordinates: Coordinate[] = [...prop.define.coordinates];
-        coordinates.splice(data.index, 1, data.coordinate);
+
+        //削除
+        if (data.coordinate === null) {
+          coordinates.splice(data.index, 1,);
+        }
+
+        //更新
+        else {
+          coordinates.splice(data.index, 1, data.coordinate);
+        }
 
         //伝播
         context.emit('change-define', {defineIndex: prop.index, define: {...prop.define, coordinates}});
       };
 
       //Styles の変更を親へ伝播する
-      const changeStyle = (data: {style: Style, index: number}) => {
-        //styles のコピーを作成し、対象 index の style のみ書き換える
+      const changeStyle = (data: {style: Style | null, index: number}) => {
+        //styles のコピーを作成
         const styles: Style[] = [...prop.define.styles];
-        styles.splice(data.index, 1, data.style);
+
+        //削除
+        if (data.style === null) {
+          styles.splice(data.index, 1);
+        }
+
+        //更新
+        else {
+          styles.splice(data.index, 1, data.style);
+        }
 
         //伝播
         context.emit('change-define', {defineIndex: prop.index, define: {...prop.define, styles}});

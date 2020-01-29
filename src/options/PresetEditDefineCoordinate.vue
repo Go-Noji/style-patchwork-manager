@@ -30,6 +30,12 @@
         @change="changeValue"
       >
     </label>
+    <label>
+      <button
+        type="button"
+        @click="deleteCoordinate"
+      >削除</button>
+    </label>
   </div>
 </template>
 
@@ -84,8 +90,16 @@
         });
       };
 
+      //削除を親に伝播
+      const deleteCoordinate = () => {
+        context.emit('change-coordinate', {
+          coordinate: null,
+          index: prop.index
+        });
+      };
+
       //テンプレートへ伝播
-      return {changeType, changeKey, changeValue};
+      return {changeType, changeKey, changeValue, deleteCoordinate};
     }
   })
 </script>

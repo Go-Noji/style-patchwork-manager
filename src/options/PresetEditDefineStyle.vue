@@ -16,6 +16,12 @@
         @change="changeStyleValues"
       >
     </label>
+    <label>
+      <button
+        type="button"
+        @click="deleteStyle"
+      >削除</button>
+    </label>
   </div>
 </template>
 
@@ -61,8 +67,16 @@
         });
       };
 
+      //削除を親に伝播
+      const deleteStyle = () => {
+        context.emit('change-style', {
+          style: null,
+          index: prop.index
+        });
+      };
+
       //テンプレートへ伝播
-      return {changeStyleProperty, changeStyleValues};
+      return {changeStyleProperty, changeStyleValues, deleteStyle};
     }
   })
 </script>

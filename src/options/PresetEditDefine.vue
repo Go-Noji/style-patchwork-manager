@@ -17,7 +17,7 @@
       </ul>
       <button
         type="button"
-        @click="addDefineCoordinate"
+        @click="createDefineCoordinate"
       >適用条件を追加</button>
     </section>
     <section>
@@ -37,7 +37,7 @@
       <button
         :key="'deleteDefineButton'+index"
         type="button"
-        @click="addDefineStyle"
+        @click="createDefineStyle"
       >適用スタイルを追加</button>
     </section>
     <button
@@ -100,17 +100,17 @@
       };
 
       //適用条件の追加
-      const addDefineCoordinate = () => {
-        context.emit('add-define-coordinate', prop.index);
+      const createDefineCoordinate = () => {
+        context.emit('create-define-coordinate', prop.index);
       };
 
       //適用スタイルの追加
-      const addDefineStyle = () => {
-        context.emit('add-define-style', prop.index);
+      const createDefineStyle = () => {
+        context.emit('create-define-style', prop.index);
       };
 
       //テンプレートへ伝播
-      return {changeCoordinate, changeStyle, deleteDefine, addDefineCoordinate, addDefineStyle};
+      return {changeCoordinate, changeStyle, deleteDefine, createDefineCoordinate, createDefineStyle};
     }
   })
 </script>

@@ -50,8 +50,8 @@
               :define="define"
               @change-define="changeDefine"
               @delete-define="deleteDefine"
-              @add-define-coordinate="createDefineCoordinate"
-              @add-define-style="createDefineStyle"
+              @create-define-coordinate="createDefineCoordinate"
+              @create-define-style="createDefineStyle"
             ></PresetEditDefine>
           </li>
         </ul>

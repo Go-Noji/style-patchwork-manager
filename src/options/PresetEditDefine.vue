@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h4>定義{{index}}</h4>
+    <h4>定義{{index + 1}}</h4>
     <section>
       <h5>適用条件</h5>
       <ul>

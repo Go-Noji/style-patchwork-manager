@@ -51,6 +51,7 @@
               @change-define="changeDefine"
               @delete-define="deleteDefine"
               @add-define-coordinate="createDefineCoordinate"
+              @add-define-style="createDefineStyle"
             ></PresetEditDefine>
           </li>
         </ul>
@@ -79,7 +80,7 @@
 
 <script lang="ts">
   import {createComponent, reactive, SetupContext, onMounted, ref, computed} from "@vue/composition-api";
-  import {DEFAULT_PRESET, COLORS, DEFAULT_DEFINE, DEFAULT_DEFINE_COORDINATE} from "@/settings/settings";
+  import {COLORS, DEFAULT_DEFINE, DEFAULT_DEFINE_COORDINATE, DEFAULT_DEFINE_STYLE} from "@/settings/settings";
   import usePresets from "@/options/presetComposition";
   import {Define, Preset} from "@/settings/interface";
   import PresetEditDefine from "@/options/PresetEditDefine";
@@ -159,6 +160,23 @@
         await updatePreset(index, data);
       };
 
+      //適用スタイルの追加
+      const createDefineStyle = async (defineIndex: number) => {
+        //対象プリセットの用意
+        const data = {...state.presets[index]};
+
+        //対象が無ければなにもしない
+        if (data.defines[defineIndex] === undefined) {
+          return;
+        }
+
+        //適用条件を追加
+        data.defines[defineIndex].styles.push(DEFAULT_DEFINE_STYLE);
+
+        //更新
+        await updatePreset(index, data);
+      };
+
       //データを読み込む
       onMounted(() => {
         readPresets();
@@ -172,7 +190,8 @@
         changeDefine,
         createDefine,
         deleteDefine,
-        createDefineCoordinate
+        createDefineCoordinate,
+        createDefineStyle
       };
     }
   })

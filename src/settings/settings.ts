@@ -47,3 +47,9 @@ export const DEFAULT_DEFINE_COORDINATE: Coordinate = {
   key: 'div',
   values: null
 };
+
+//適用スタイルの初期値
+export const DEFAULT_DEFINE_STYLE: Style = {
+  property: 'display',
+  values: 'none',
+};

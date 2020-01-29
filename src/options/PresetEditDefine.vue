@@ -1,11 +1,11 @@
 <template>
   <section>
-    <h4>定義{{prop.index}}</h4>
+    <h4>定義{{index}}</h4>
     <section>
       <h5>適用条件</h5>
       <ul>
         <li
-          v-for="(coordinate, coordinateIndex) in prop.define.coordinates"
+          v-for="(coordinate, coordinateIndex) in define.coordinates"
           :key="'coordinate_'+coordinateIndex"
         >
           <PresetEditDefineCoordinate
@@ -16,10 +16,29 @@
         </li>
       </ul>
       <button
-        :key="'deleteDefineButton'+prop.index"
         type="button"
         @click="addDefineCoordinate"
       >適用条件を追加</button>
+    </section>
+    <section>
+      <h5>適用スタイル</h5>
+      <ul>
+        <li
+          v-for="(style, styleIndex) in define.styles"
+          :key="'style_'+styleIndex"
+        >
+          <PresetEditDefineStyle
+            :data="style"
+            :index="styleIndex"
+            @change-style="changeStyle"
+          ></PresetEditDefineStyle>
+        </li>
+      </ul>
+      <button
+        :key="'deleteDefineButton'+index"
+        type="button"
+        @click="addDefineStyle"
+      >適用スタイルを追加</button>
     </section>
     <button
       type="button"
@@ -30,8 +49,9 @@
 
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
-  import {Coordinate, Define} from "@/settings/interface";
+  import {Coordinate, Define, Style} from "@/settings/interface";
   import PresetEditDefineCoordinate from "@/options/PresetEditDefineCoordinate";
+  import PresetEditDefineStyle from "@/options/PresetEditDefineStyle";
 
   type Prop = {
     index: number,
@@ -40,7 +60,8 @@
 
   export default createComponent({
     components: {
-      PresetEditDefineCoordinate
+      PresetEditDefineCoordinate,
+      PresetEditDefineStyle
     },
     props: {
       index: {
@@ -63,6 +84,16 @@
         context.emit('change-define', {defineIndex: prop.index, define: {...prop.define, coordinates}});
       };
 
+      //Styles の変更を親へ伝播する
+      const changeStyle = (data: {style: Style, index: number}) => {
+        //styles のコピーを作成し、対象 index の style のみ書き換える
+        const styles: Style[] = [...prop.define.styles];
+        styles.splice(data.index, 1, data.style);
+
+        //伝播
+        context.emit('change-define', {defineIndex: prop.index, define: {...prop.define, styles}});
+      };
+
       //定義の削除
       const deleteDefine = () => {
         context.emit('delete-define', prop.index);
@@ -73,8 +104,13 @@
         context.emit('add-define-coordinate', prop.index);
       };
 
+      //適用スタイルの追加
+      const addDefineStyle = () => {
+        context.emit('add-define-style', prop.index);
+      };
+
       //テンプレートへ伝播
-      return {prop, changeCoordinate, deleteDefine, addDefineCoordinate};
+      return {changeCoordinate, changeStyle, deleteDefine, addDefineCoordinate, addDefineStyle};
     }
   })
 </script>

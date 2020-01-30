@@ -93,7 +93,7 @@ export default () => {
     }
 
     //インデックスを返す
-    return state.presets.length;
+    return state.presets.length - 1;
   };
 
   /**

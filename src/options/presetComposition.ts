@@ -1,14 +1,16 @@
 import {reactive} from "@vue/composition-api";
 import {Preset} from "@/settings/interface";
-import {DEFAULT_PRESET} from "@/settings/settings";
+import {DEFAULT_PRESET, DEFAULT_STORAGE_AREA} from "@/settings/settings";
 
 /**
  * Preset を Chrome から取得する
  */
 export default () => {
-  //プリセット、ローディングフラグ、エラー文字列
-  const state = reactive<{presets: Preset[], loading: boolean, error: string}>({
+  //プリセット、初期化フラグ、ローディングフラグ、エラー文字列
+  const state = reactive<{presets: Preset[], init: boolean, storageArea: 'sync' | 'local', loading: boolean, error: string}>({
     presets: [],
+    init: false,
+    storageArea: 'sync',
     loading: false,
     error: ''
   });
@@ -19,7 +21,7 @@ export default () => {
    */
   const _registerPreset = async (presets: Preset[]) => {
     await (() =>  new Promise(resolve => {
-      chrome.storage.sync.set({presets: JSON.stringify(presets)}, () => {
+      chrome.storage[state.storageArea].set({presets: JSON.stringify(presets)}, () => {
         resolve();
       });
     }))();
@@ -38,6 +40,17 @@ export default () => {
     state.error = '';
   };
 
+  //読み込み先の初期化
+  const init = async () => {
+    await (() => new Promise(resolve => {
+      chrome.storage.sync.get({storage: DEFAULT_STORAGE_AREA}, (items) => {
+        state.init = true;
+        state.storageArea = items.storage === 'sync' ? 'sync' : 'local'
+        resolve();
+      });
+    }))();
+  };
+
   /**
    * データを新たに読み込む
    */
@@ -48,7 +61,7 @@ export default () => {
     try {
       //Chrome 内のデータを読み込む
       const presets: Preset[] = await (() => new Promise<Preset[]>(resolve => {
-        chrome.storage.sync.get({presets: '[]'}, (items: {[key: string]: any}) => {
+        chrome.storage[state.storageArea].get({presets: '[]'}, (items: {[key: string]: any}) => {
           resolve(JSON.parse(String(items.presets)));
         });
       }))();
@@ -174,5 +187,5 @@ export default () => {
   };
 
   //返す
-  return {state, readPresets, createPreset, updatePreset, deletePreset};
+  return {state, init, readPresets, createPreset, updatePreset, deletePreset};
 };

@@ -52,6 +52,11 @@
         <p>設定読み込み中...</p>
       </div>
     </section>
+    <div>
+      <router-link
+        to="/"
+      >プリセット一覧へ戻る</router-link>
+    </div>
   </article>
 </template>
 

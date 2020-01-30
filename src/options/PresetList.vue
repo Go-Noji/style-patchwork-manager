@@ -1,18 +1,25 @@
 <template>
   <article>
     <h1>設定リスト</h1>
-    <ul v-if="state.presets.length !==0">
-      <li v-for="(preset, index) in state.presets">
-        <PresetListItem
-          :index="index"
-          :title="preset.title"
-          :url="preset.url"
-          @delete-preset="_delete"
-        ></PresetListItem>
-      </li>
-    </ul>
-    <p v-else>プリセットは未登録です</p>
-    <div><button @click="_create">プリセットを追加する</button></div>
+    <div v-if="state.init">
+      <ul v-if="state.presets.length !==0">
+        <li v-for="(preset, index) in state.presets">
+          <PresetListItem
+            :index="index"
+            :title="preset.title"
+            :url="preset.url"
+            @delete-preset="_delete"
+          ></PresetListItem>
+        </li>
+      </ul>
+      <p v-else>プリセットは未登録です</p>
+      <div><button @click="_create">プリセットを追加する</button></div>
+    </div>
+    <div
+      v-else
+    >
+      <p>読み込み中...</p>
+    </div>
     <div>
       <router-link
         to="/setting"
@@ -32,7 +39,7 @@
     },
     setup(_, context: SetupContext) {
       //プリセット用の composition function を用意
-      const {state, readPresets, createPreset, deletePreset} = usePresets();
+      const {state, init, readPresets, createPreset, deletePreset} = usePresets();
 
       //エラーメッセージ
       const message = ref<string>();
@@ -68,7 +75,10 @@
        */
       onMounted(() => {
         //プリセットの初期化
-        readPresets()
+        init()
+          .then(() => {
+            return readPresets();
+          })
           .catch(() => {
             message.value = 'Chrome からプリセットの読み込みに失敗しました';
           });

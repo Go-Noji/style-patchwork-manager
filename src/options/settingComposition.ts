@@ -89,11 +89,27 @@ export default () => {
   //storage を変更する
   const changeStorage = async (storage: Storage) => {
     try {
-      //更新を試みる
+      //現在の保存先と移行先
+      const targetStorage: Storage = storage;
+      const nowStorage: Storage = storage === 'local' ? 'sync' : 'local';
+
+      //現在のデータをもう片方に移す
+      await (() => new Promise(resolve => {
+        chrome.storage[nowStorage].get({presets: '[]'}, (items) => {
+          chrome.storage[targetStorage].set({presets: items.presets}, resolve);
+        });
+      }))();
+
+      //保存先設定の更新を試みる
       await (() =>  new Promise(resolve => {
         chrome.storage.sync.set({storage}, () => {
           resolve();
         });
+      }))();
+
+      //古い方のデータを削除する
+      await (() => new Promise(resolve => {
+        chrome.storage[nowStorage].remove('presets', resolve);
       }))();
 
       //設定を書き換える

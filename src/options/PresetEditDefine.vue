@@ -74,7 +74,10 @@
       }
     },
     setup(prop: Prop, context: SetupContext) {
-      //Coordinates の変更を親へ伝播する
+      /**
+       * Coordinates の変更を親へ伝播する
+       * @param data
+       */
       const changeCoordinate = (data: {coordinate: Coordinate | null, index: number}) => {
         //coordinates のコピーを作成
         const coordinates: Coordinate[] = [...prop.define.coordinates];
@@ -93,7 +96,10 @@
         context.emit('change-define', {defineIndex: prop.index, define: {...prop.define, coordinates}});
       };
 
-      //Styles の変更を親へ伝播する
+      /**
+       * Styles の変更を親へ伝播する
+       * @param data
+       */
       const changeStyle = (data: {style: Style | null, index: number}) => {
         //styles のコピーを作成
         const styles: Style[] = [...prop.define.styles];
@@ -112,17 +118,23 @@
         context.emit('change-define', {defineIndex: prop.index, define: {...prop.define, styles}});
       };
 
-      //定義の削除
+      /**
+       * 定義の削除
+       */
       const deleteDefine = () => {
         context.emit('delete-define', prop.index);
       };
 
-      //適用条件の追加
+      /**
+       * 適用条件の追加
+       */
       const createDefineCoordinate = () => {
         context.emit('create-define-coordinate', prop.index);
       };
 
-      //適用スタイルの追加
+      /**
+       * 適用スタイルの追加
+       */
       const createDefineStyle = () => {
         context.emit('create-define-style', prop.index);
       };

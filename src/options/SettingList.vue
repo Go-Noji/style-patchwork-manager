@@ -72,7 +72,10 @@
       //読み込み完了フラグ
       const isLoaded = ref(false);
 
-      //storage を変更する
+      /**
+       * storage を変更する
+       * @param event
+       */
       const changeStorageData = async (event: Event) => {
         //情報の提供元が input でなければ何もしない
         if ( ! (event.target instanceof HTMLInputElement)) {
@@ -88,7 +91,10 @@
         await changeStorage(event.target.value);
       };
 
-      //enable を変更する
+      /**
+       * enable を変更する
+       * @param event
+       */
       const changeEnableData = async (event: Event) => {
         //情報の提供元が input でなければ何もしない
         if ( ! (event.target instanceof HTMLInputElement)) {

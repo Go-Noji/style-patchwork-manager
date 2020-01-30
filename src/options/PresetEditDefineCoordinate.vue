@@ -70,19 +70,33 @@
         return {...prop.coordinate, [key]: value};
       };
 
-      //各値の変更を親へ伝播する
+      /**
+       * type の変更を親に伝播
+       * @param e
+       */
       const changeType = (e: Event) => {
         context.emit('change-coordinate', {
           coordinate: _createUpdateCoordinate('type', e.target instanceof HTMLSelectElement ? e.target.value : ''),
           index: prop.index
         });
       };
+
+      /**
+       * key の変更を親に伝播
+       * @param e
+       */
       const changeKey = (e: Event) => {
         context.emit('change-coordinate', {
           coordinate: _createUpdateCoordinate('key', e.target instanceof HTMLInputElement ? e.target.value : ''),
           index: prop.index
         });
       };
+
+      /**
+       * values の変更を親に伝播
+       * 親に伝播
+       * @param e
+       */
       const changeValue = (e: Event) => {
         context.emit('change-coordinate', {
           coordinate: _createUpdateCoordinate('values', e.target instanceof HTMLInputElement ? e.target.value : ''),
@@ -90,7 +104,9 @@
         });
       };
 
-      //削除を親に伝播
+      /**
+       * 削除を親に伝播
+       */
       const deleteCoordinate = () => {
         context.emit('change-coordinate', {
           coordinate: null,

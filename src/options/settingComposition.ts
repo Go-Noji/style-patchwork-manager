@@ -54,7 +54,9 @@ export default () => {
     error: ''
   });
 
-  //現在の設定を読み込む
+  /**
+   * 現在の設定を読み込む
+   */
   const getSettings = async () => {
     try {
       //設定の取得を試みる
@@ -86,7 +88,10 @@ export default () => {
     return state;
   };
 
-  //storage を変更する
+  /**
+   * storage を変更する
+   * @param storage
+   */
   const changeStorage = async (storage: Storage) => {
     try {
       //現在の保存先と移行先
@@ -120,7 +125,10 @@ export default () => {
     }
   };
 
-  //enable を変更する
+  /**
+   * enable を変更する
+   * @param enable
+   */
   const changeEnable = async (enable: boolean) => {
     try {
       //更新を試みる

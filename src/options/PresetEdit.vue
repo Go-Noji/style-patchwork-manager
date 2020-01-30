@@ -104,7 +104,11 @@
       //プリセットデータ
       const preset = computed(() => state.presets[index] === undefined ? null : state.presets[index]);
 
-      //preset の define 以外を更新する
+      /**
+       * preset の define 以外を更新する
+       * @param key
+       * @param event
+       */
       const updatePresetData = async (key: string, event: Event) => {
         //event が input, select, もしくは textarea のイベントでなかったなにもしない
         if ( ! (event.target instanceof HTMLInputElement) && ! (event.target instanceof HTMLTextAreaElement) && ! (event.target instanceof HTMLSelectElement)) {
@@ -115,7 +119,9 @@
         await updatePreset(index, {...state.presets[index], [key]: event.target.value});
       };
 
-      //Define を追加する
+      /**
+       * Define を追加する
+       */
       const createDefine = async () => {
         //定義を追加した形のデータを用意
         const data = {...state.presets[index]};
@@ -125,7 +131,11 @@
         await updatePreset(index, data);
       };
 
-      //Define を変更する
+      /**
+       * Define を変更する
+       * @param defineIndex
+       * @param define
+       */
       const changeDefine = async ({defineIndex, define}: {defineIndex: number, define: Define}) => {
         //対象プリセットの用意
         const data = {...state.presets[index]};
@@ -142,7 +152,10 @@
         await updatePreset(index, data);
       };
 
-      //Define を削除する
+      /**
+       * Define を削除する
+       * @param defineIndex
+       */
       const deleteDefine = async (defineIndex: number) => {
         //対象プリセットの用意
         const data = {...state.presets[index]};
@@ -159,7 +172,10 @@
         await updatePreset(index, data);
       };
 
-      //適用条件の追加
+      /**
+       * 適用条件の追加
+       * @param defineIndex
+       */
       const createDefineCoordinate = async (defineIndex: number) => {
         //対象プリセットの用意
         const data = {...state.presets[index]};
@@ -176,7 +192,10 @@
         await updatePreset(index, data);
       };
 
-      //適用スタイルの追加
+      /**
+       * 適用スタイルの追加
+       * @param defineIndex
+       */
       const createDefineStyle = async (defineIndex: number) => {
         //対象プリセットの用意
         const data = {...state.presets[index]};

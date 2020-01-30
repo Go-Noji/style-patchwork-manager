@@ -40,7 +40,9 @@ export default () => {
     state.error = '';
   };
 
-  //読み込み先の初期化
+  /**
+   * 読み込み先の初期化
+   */
   const init = async () => {
     await (() => new Promise(resolve => {
       chrome.storage.sync.get({storage: DEFAULT_STORAGE_AREA}, (items) => {

@@ -45,7 +45,9 @@
       },
     },
     setup(props: Props, setupContext: SetupContext) {
-      //削除イベントを親に emit する
+      /**
+       * 削除イベントを親に emit する
+       */
       const deletePreset = () => {
         setupContext.emit('delete-preset', props.index);
       };

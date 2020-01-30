@@ -45,7 +45,10 @@
       }
     },
     setup(prop: Prop, context: SetupContext) {
-      //プロパティの変更を親へ伝播する
+      /**
+       * プロパティの変更を親へ伝播する
+       * @param e
+       */
       const changeStyleProperty = (e: Event) => {
         context.emit('change-style', {
           style: {
@@ -56,7 +59,10 @@
         });
       };
 
-      //値の変更を親へ伝播する
+      /**
+       * 値の変更を親へ伝播する
+       * @param e
+       */
       const changeStyleValues = (e: Event) => {
         context.emit('change-style', {
           style: {
@@ -67,7 +73,9 @@
         });
       };
 
-      //削除を親に伝播
+      /**
+       * 削除を親に伝播
+       */
       const deleteStyle = () => {
         context.emit('change-style', {
           style: null,

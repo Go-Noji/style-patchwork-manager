@@ -2,6 +2,7 @@ import Vue, {VueConstructor} from "vue";
 import Router from "vue-router";
 import PresetList from "@/options/PresetList";
 import PresetEdit from "@/options/PresetEdit";
+import SettingList from "@/options/SettingList";
 Vue.use(Router);
 
 //TODO: 2020-01-15 まだ vu-composition-api が router に対する型エラーを解決できていないようなのでキャストで凌ぐ
@@ -17,6 +18,11 @@ export default new Router({
       path: '/edit/:index',
       name: 'PresetEdit',
       component: PresetEdit as VueConstructor<Vue>
-    }
+    },
+    {
+      path: '/setting',
+      name: 'SettingList',
+      component: SettingList as VueConstructor<Vue>
+    },
   ]
 });

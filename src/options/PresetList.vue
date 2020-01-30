@@ -13,6 +13,11 @@
     </ul>
     <p v-else>プリセットは未登録です</p>
     <div><button @click="_create">プリセットを追加する</button></div>
+    <div>
+      <router-link
+        to="/setting"
+      >設定</router-link>
+    </div>
   </article>
 </template>
 

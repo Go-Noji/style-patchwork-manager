@@ -1,7 +1,7 @@
-//拡張機能のバージョン
 import {Coordinate, Define, Preset, Style} from "@/settings/interface";
 
-export const version = 0.1;
+//拡張機能のバージョン
+export const VERSION = '0.1';
 
 //拡張機能で扱うカラーセット
 export const COLORS = {
@@ -53,3 +53,6 @@ export const DEFAULT_DEFINE_STYLE: Style = {
   property: 'display',
   values: 'none',
 };
+
+//Google のデータ保存先デフォルト値
+export const DEFAULT_STORAGE_AREA = 'sync';

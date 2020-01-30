@@ -11,6 +11,7 @@
           <input
             v-model="preset.title"
             type="text"
+            @change="updatePresetData('title', $event)"
           >
         </label>
       </section>
@@ -20,6 +21,7 @@
           <input
             v-model="preset.url"
             typeof="text"
+            @change="updatePresetData('url', $event)"
           >
         </label>
       </section>
@@ -28,6 +30,8 @@
           <h3>管理色</h3>
           <select
             v-model="preset.color"
+            :style="'color: '+preset.color"
+            @input="updatePresetData('color', $event)"
           >
             <option
               v-for="(color, name) in colors"
@@ -65,6 +69,7 @@
           <h3>自由記述スタイルシート</h3>
           <textarea
             v-model="preset.style"
+            @change="updatePresetData('style', $event)"
           ></textarea>
         </label>
       </section>
@@ -89,7 +94,7 @@
     components: {
       PresetEditDefine
     },
-    setup(props, context: SetupContext) {
+    setup(_, context: SetupContext) {
       //プリセットの対象インデックス
       const index = Number(context.root.$route.params['index']);
 
@@ -98,6 +103,17 @@
 
       //プリセットデータ
       const preset = computed(() => state.presets[index] === undefined ? null : state.presets[index]);
+
+      //preset の define 以外を更新する
+      const updatePresetData = async (key: string, event: Event) => {
+        //event が input, select, もしくは textarea のイベントでなかったなにもしない
+        if ( ! (event.target instanceof HTMLInputElement) && ! (event.target instanceof HTMLTextAreaElement) && ! (event.target instanceof HTMLSelectElement)) {
+          return;
+        }
+
+        //プリセットデータの対象キーを変更したデータで更新
+        await updatePreset(index, {...state.presets[index], [key]: event.target.value});
+      };
 
       //Define を追加する
       const createDefine = async () => {
@@ -187,6 +203,7 @@
         error: state.error,
         colors: COLORS,
         preset,
+        updatePresetData,
         changeDefine,
         createDefine,
         deleteDefine,

@@ -43,7 +43,6 @@
                 @input="changeStorageData"
               >
             </label>
-            <span>現在使用中のバイト数: {{state.bytes}}</span>
           </div>
         </li>
       </ul>
@@ -52,6 +51,24 @@
       >
         <p>設定読み込み中...</p>
       </div>
+    </section>
+    <section>
+      <h2>情報</h2>
+      <ul>
+        <li>
+          <p>バージョン</p>
+          <div>
+            <p>{{state.version}}</p>
+          </div>
+        </li>
+        <li>
+          <p>使用バイト数</p>
+          <div>
+            <p>現在使用中のバイト数: {{new Intl.NumberFormat().format(state.bytes)}}</p>
+            <p>残り使用可能なバイト数: {{new Intl.NumberFormat().format(remainingAvailableBytes)}}</p>
+          </div>
+        </li>
+      </ul>
     </section>
     <div>
       <router-link
@@ -62,8 +79,9 @@
 </template>
 
 <script lang="ts">
-  import {ref, createComponent, onMounted} from "@vue/composition-api";
+  import {ref, createComponent, onMounted, computed} from "@vue/composition-api";
   import useSetting from "@/options/settingComposition"
+  import {STORAGE_LIMIT_SYNC, STORAGE_LIMIT_LOCAL} from "@/settings/settings";
 
   export default createComponent({
     setup() {
@@ -106,6 +124,17 @@
         await changeEnable(event.target.checked);
       };
 
+      /**
+       * 現在の残り使用可能バイト数を返す
+       */
+      const remainingAvailableBytes = computed((): number => {
+        if (state.storage === "sync") {
+          return STORAGE_LIMIT_SYNC < state.bytes ? 0 : STORAGE_LIMIT_SYNC - state.bytes;
+        } else {
+          return STORAGE_LIMIT_LOCAL < state.bytes ? 0 : STORAGE_LIMIT_LOCAL - state.bytes;
+        }
+      });
+
       //状態を読み込む
       onMounted(() => {
         getSettings()
@@ -116,7 +145,7 @@
       });
 
       //テンプレートに伝播
-      return {state, isLoaded, changeStorageData, changeEnableData};
+      return {state, isLoaded, remainingAvailableBytes, changeStorageData, changeEnableData};
     }
   })
 </script>

@@ -56,3 +56,9 @@ export const DEFAULT_DEFINE_STYLE: Style = {
 
 //Google のデータ保存先デフォルト値
 export const DEFAULT_STORAGE_AREA = 'sync';
+
+//sync ストレージにおける最大値
+export const STORAGE_LIMIT_SYNC = 8000;
+
+//local ストレージにおける最大値
+export const STORAGE_LIMIT_LOCAL = 5242080;

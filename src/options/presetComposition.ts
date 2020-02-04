@@ -54,33 +54,6 @@ export default () => {
   };
 
   /**
-   * データを新たに読み込む
-   */
-  const readPresets = async () => {
-    //データの初期化
-    _startSync();
-
-    try {
-      //Chrome 内のデータを読み込む
-      const presets: Preset[] = await (() => new Promise<Preset[]>(resolve => {
-        chrome.storage[state.storageArea].get({presets: '[]'}, (items: {[key: string]: any}) => {
-          resolve(JSON.parse(String(items.presets)));
-        });
-      }))();
-
-      //登録
-      state.presets = presets;
-    }
-    catch (e) {
-      state.error = 'Chrome からデータが読み込めませんでした。';
-    }
-    finally {
-      //操作中フラグを false にする
-      state.loading = false;
-    }
-  };
-
-  /**
    * プリセットの追加
    */
   const createPreset = async () => {
@@ -109,6 +82,33 @@ export default () => {
 
     //インデックスを返す
     return state.presets.length - 1;
+  };
+
+  /**
+   * データを新たに読み込む
+   */
+  const readPresets = async () => {
+    //データの初期化
+    _startSync();
+
+    try {
+      //Chrome 内のデータを読み込む
+      const presets: Preset[] = await (() => new Promise<Preset[]>(resolve => {
+        chrome.storage[state.storageArea].get({presets: '[]'}, (items: {[key: string]: any}) => {
+          resolve(JSON.parse(String(items.presets)));
+        });
+      }))();
+
+      //登録
+      state.presets = presets;
+    }
+    catch (e) {
+      state.error = 'Chrome からデータが読み込めませんでした。';
+    }
+    finally {
+      //操作中フラグを false にする
+      state.loading = false;
+    }
   };
 
   /**

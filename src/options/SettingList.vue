@@ -43,6 +43,7 @@
                 @input="changeStorageData"
               >
             </label>
+            <span>現在使用中のバイト数: {{state.bytes}}</span>
           </div>
         </li>
       </ul>

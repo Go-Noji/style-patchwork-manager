@@ -45,14 +45,27 @@ export default () => {
   const state = reactive<{
     version: string,
     storage: Storage,
+    bytes: number,
     enable: boolean,
     error: string
   }>({
     version: VERSION,
     storage: DEFAULT_STORAGE_AREA,
+    bytes: 0,
     enable: true,
     error: ''
   });
+
+  /**
+   * 現在ストレージで使用中のバイト数を更新する
+   */
+  const _updateStorageBytes = async () => {
+    state.bytes = await (() => new Promise<number>(resolve => {
+      chrome.storage[state.storage].getBytesInUse(null, bytes => {
+        resolve(Number(bytes));
+      });
+    }))();
+  };
 
   /**
    * 現在の設定を読み込む
@@ -75,6 +88,9 @@ export default () => {
           resolve(items);
         });
       }))();
+
+      //現在使用中のバイト数を取得する
+      await _updateStorageBytes();
 
       //設定値を書き換える
       state.storage = setting.storage;
@@ -116,6 +132,9 @@ export default () => {
       await (() => new Promise(resolve => {
         chrome.storage[nowStorage].remove('presets', resolve);
       }))();
+
+      //現在使用中のバイト数を取得する
+      await _updateStorageBytes();
 
       //設定を書き換える
       state.storage = storage;

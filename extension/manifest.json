@@ -25,6 +25,6 @@
 		"48": "48.png",
 		"32": "32.png"
 	},
-	"permissions": ["activeTab", "tabs", "storage"],
+	"permissions": ["activeTab", "tabs", "storage", "downloads"],
 	"manifest_version": 2
 }

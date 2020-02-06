@@ -192,32 +192,33 @@ export default () => {
   /**
    * エクスポート用の json 文字列を作成する
    */
-  const exportFileString = async () => {
+  const exportFileString = async (): Promise<string> => {
     //返す値
-    let json = '{"preset":[]}';
+    let json = '{"preset":[],"enable":true,"storage":"sync","version":"'+state.version+'"}';
 
     try {
       //設定の取得を試みる
-      const presets = await (() => new Promise<string>((resolve, reject) => {
+      const setting = await (() => new Promise<string>((resolve, reject) => {
         chrome.storage[state.storage].get({
           presets: '[]'
         }, (items) => {
           //取得した情報の型を検査
-          if (typeof items.preset !== 'string') {
+          if (typeof items.presets !== 'string') {
             reject({});
             return;
           }
 
           //返す
-          resolve(items.preset);
+          resolve(JSON.stringify({presets: items.presets, enable: state.enable, storage: state.storage, version: state.version}));
         });
       }))();
 
       //json を作成
-      json = JSON.stringify({presets, version: VERSION})
+      json = setting;
     }
     catch (e) {
-      state.error = '更新に失敗しました';
+      state.error = 'エクスポートに失敗しました';
+      return '';
     }
 
     //返す
@@ -229,22 +230,41 @@ export default () => {
    * @param json
    */
   const importFileString = async (json: string) => {
-    //JSON をパース
-    const data = JSON.parse(json);
-
-    //プリセットが存在しない場合はエラー
-    if (data.presets === undefined || ! isPresets(data.presets)) {
-      state.error = 'インポートファイルが不正です';
-      return;
-    }
-
-    //バージョンがかわっていたらここで何か処理をする
-
     try {
+      //JSON をパース
+      const data = JSON.parse(json);
+
+      //プリセットが存在しない場合はエラー
+      if (data.presets === undefined || ! isPresets(JSON.parse(data.presets))) {
+        state.error = 'インポートファイルが不正です';
+        return;
+      }
+
+      //storage 設定が存在しなかった場合はエラー
+      if (data.storage === undefined || ! isStorage(data.storage)) {
+        state.error = 'インポートファイルが不正です';
+        return;
+      }
+
+      //enable 設定が存在しなかった場合はエラー
+      if (data.enable === undefined || typeof data.enable !== 'boolean') {
+        state.error = 'インポートファイルが不正です';
+        return;
+      }
+
+      //バージョンがかわっていたらここで何か処理をする
+
       //設定の更新を試みる
       await (() => new Promise<string>(resolve => {
-        chrome.storage[state.storage].set({presets: data.presets}, () => {
-          resolve();
+        //設定の変更を試みる
+        chrome.storage.sync.set({storage: data.storage, enable: data.enable}, () => {
+          //変更先
+          const storage: Storage = data.storage;
+
+          //変更を試みる
+          chrome.storage[storage].set({presets: data.presets}, () => {
+            resolve();
+          });
         });
       }))();
     }
@@ -254,5 +274,5 @@ export default () => {
   };
 
   //返す
-  return {state, getSettings, changeStorage, changeEnable, exportFileString};
+  return {state, getSettings, changeStorage, changeEnable, exportFileString, importFileString};
 };

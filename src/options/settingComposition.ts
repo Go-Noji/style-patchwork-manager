@@ -1,6 +1,6 @@
 import {reactive} from "@vue/composition-api";
 import {COLORS, DEFAULT_STORAGE_AREA, VERSION} from "@/settings/settings";
-import {Preset} from "@/settings/interface";
+import {isPreset, Preset} from "@/settings/interface";
 
 //保存先
 type Storage = 'sync' | 'local';
@@ -48,88 +48,13 @@ const isPresets = (value: any): value is Preset[] => {
   }
 
   //各値を検査
-  for (let i = 0, presetMax = value.length; i < presetMax; i = (i + 1) | 0) {
-    //検査対象を変数化
-    const targetPreset = value[i];
-
-    //title が存在しない
-    if (targetPreset.title === undefined || typeof targetPreset.title !== "string") {
-      return false;
+  for (let i = 0, max = value.length; i < max; i = (i + 1) | 0) {
+    if (isPreset(value[i])) {
+      continue;
     }
 
-    //url が存在しない
-    if (targetPreset.url === undefined || typeof targetPreset.url !== "string") {
-      return false;
-    }
-
-    //color が存在しない、もしくは定義外
-    if (targetPreset.color === undefined || typeof targetPreset.color !== "string" || ! Object.keys(COLORS).some(key => key === targetPreset.color)) {
-      return false;
-    }
-
-    //style が無い
-    if (targetPreset.style === undefined || typeof targetPreset.style !== "string") {
-      return false;
-    }
-
-    //Define が存在しない
-    if (targetPreset.defines === undefined || ! (targetPreset.defines instanceof Array)) {
-      return false;
-    }
-
-    //各 Define を検査
-    for (let j = 0, defineMax = targetPreset.defines.length; j < defineMax; j = (j + 1) | 0) {
-      //検査対象を変数化
-      const targetDefine = targetPreset.defines[j];
-
-      //coordinates が存在しない
-      if (targetDefine.coordinates === undefined || ! (targetDefine.coordinates instanceof Array)) {
-        return false;
-      }
-
-      //styles が存在しない
-      if (targetDefine.styles === undefined || ! (targetDefine.styles instanceof Array)) {
-        return false;
-      }
-
-      //各 Coordinates を検査
-      for (let k = 0, coordinateMax = targetDefine.coordinates.length; k < coordinateMax; k = (k + 1) | 0) {
-        //検査対象を変数化
-        const targetCoordinate = targetDefine.coordinates[k];
-
-        //type が正しくない
-        if (targetCoordinate.type !== 'style' && targetCoordinate.type !== 'augment' && targetCoordinate.type !== 'tag') {
-          return false;
-        }
-
-        //key が無い
-        if (targetCoordinate.key === undefined || typeof targetCoordinate.key !== "string") {
-          return false;
-        }
-
-        //values が無い
-        if (targetCoordinate.values === undefined || (typeof targetCoordinate.values !== "string" && targetCoordinate.values !== null)) {
-          return false;
-        }
-      }
-
-
-      //各 style を検査
-      for (let k = 0, styleMax = targetDefine.styles.length; k < styleMax; k = (k + 1) | 0) {
-        //検査対象を変数化
-        const targetStyle = targetDefine.styles[k];
-
-        //property が無い
-        if (targetStyle.property === undefined || typeof targetStyle.property !== "string") {
-          return false;
-        }
-
-        //values が無い
-        if (targetStyle.values === undefined || typeof targetStyle.values !== "string") {
-          return false;
-        }
-      }
-    }
+    //Preset に問題あり
+    return false;
   }
 
   //正常判定

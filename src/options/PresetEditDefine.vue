@@ -1,8 +1,8 @@
 <template>
   <section>
-    <h4>定義{{index + 1}}</h4>
+    <h4><AppLocalizationText msg="msg_definition"></AppLocalizationText>{{index + 1}}</h4>
     <section>
-      <h5>適用条件</h5>
+      <h5><AppLocalizationText msg="msg_applicable_condition"></AppLocalizationText></h5>
       <ul>
         <li
           v-for="(coordinate, coordinateIndex) in define.coordinates"
@@ -18,10 +18,10 @@
       <button
         type="button"
         @click="createDefineCoordinate"
-      >適用条件を追加</button>
+      ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
     </section>
     <section>
-      <h5>適用スタイル</h5>
+      <h5><AppLocalizationText msg="msg_applicable_style"></AppLocalizationText></h5>
       <ul>
         <li
           v-for="(style, styleIndex) in define.styles"
@@ -38,12 +38,12 @@
         :key="'deleteDefineButton'+index"
         type="button"
         @click="createDefineStyle"
-      >適用スタイルを追加</button>
+      ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
     </section>
     <button
       type="button"
       @click="deleteDefine"
-    >定義を削除</button>
+    ><AppLocalizationText msg="msg_delete"></AppLocalizationText></button>
   </section>
 </template>
 
@@ -52,6 +52,7 @@
   import {Coordinate, Define, Style} from "@/settings/interface";
   import PresetEditDefineCoordinate from "@/options/PresetEditDefineCoordinate";
   import PresetEditDefineStyle from "@/options/PresetEditDefineStyle";
+  import AppLocalizationText from "@/options/AppLocalizationText.vue";
 
   type Prop = {
     index: number,
@@ -61,7 +62,8 @@
   export default createComponent({
     components: {
       PresetEditDefineCoordinate,
-      PresetEditDefineStyle
+      PresetEditDefineStyle,
+      AppLocalizationText
     },
     props: {
       index: {

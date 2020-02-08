@@ -121,7 +121,7 @@ export default () => {
       state.enable = setting.enable;
     }
     catch (e) {
-      state.error = '更新に失敗しました';
+      state.error = 'msg_error_update_failed';
     }
 
     //返す
@@ -164,7 +164,7 @@ export default () => {
       state.storage = storage;
     }
     catch (e) {
-      state.error = '更新に失敗しました';
+      state.error = 'msg_error_update_failed';
     }
   };
 
@@ -185,7 +185,7 @@ export default () => {
       state.enable = enable;
     }
     catch (e) {
-      state.error = '更新に失敗しました';
+      state.error = 'msg_error_update_failed';
     }
   };
 
@@ -217,7 +217,7 @@ export default () => {
       json = setting;
     }
     catch (e) {
-      state.error = 'エクスポートに失敗しました';
+      state.error = 'msg_error_export_failed';
       return '';
     }
 
@@ -236,19 +236,19 @@ export default () => {
 
       //プリセットが存在しない場合はエラー
       if (data.presets === undefined || ! isPresets(JSON.parse(data.presets))) {
-        state.error = 'インポートファイルが不正です';
+        state.error = 'msg_error_invalid_file';
         return;
       }
 
       //storage 設定が存在しなかった場合はエラー
       if (data.storage === undefined || ! isStorage(data.storage)) {
-        state.error = 'インポートファイルが不正です';
+        state.error = 'msg_error_invalid_file';
         return;
       }
 
       //enable 設定が存在しなかった場合はエラー
       if (data.enable === undefined || typeof data.enable !== 'boolean') {
-        state.error = 'インポートファイルが不正です';
+        state.error = 'msg_error_invalid_file';
         return;
       }
 
@@ -269,7 +269,7 @@ export default () => {
       }))();
     }
     catch (e) {
-      state.error = '更新に失敗しました';
+      state.error = 'msg_error_update_failed';
     }
   };
 

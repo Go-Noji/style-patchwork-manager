@@ -1,8 +1,8 @@
 <template>
   <article>
-    <h1>設定リスト</h1>
+    <h1><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></h1>
     <div v-if="state.init">
-      <ul v-if="state.presets.length !==0">
+      <ul v-if="state.presets.length !== 0">
         <li v-for="(preset, index) in state.presets">
           <PresetListItem
             :index="index"
@@ -12,37 +12,39 @@
           ></PresetListItem>
         </li>
       </ul>
-      <p v-else>プリセットは未登録です</p>
-      <div><button @click="_create">プリセットを追加する</button></div>
+      <p v-else><AppLocalizationText
+        msg="msg_empty_preset_list"
+        key="msg_empty_preset_list"
+      ></AppLocalizationText></p>
+      <div><button @click="_create"><AppLocalizationText msg="msg_add"></AppLocalizationText></button></div>
     </div>
     <div
       v-else
     >
-      <p>読み込み中...</p>
+      <p><AppLocalizationText msg="msg_loading"></AppLocalizationText></p>
     </div>
     <div>
       <router-link
         to="/setting"
-      >設定</router-link>
+      ><AppLocalizationText msg="msg_setting"></AppLocalizationText></router-link>
     </div>
   </article>
 </template>
 
 <script lang="ts">
-  import {createComponent, onMounted, reactive, ref, SetupContext} from "@vue/composition-api";
-  import PresetListItem from "@/options/PresetListItem";
+  import {createComponent, onMounted, SetupContext} from "@vue/composition-api";
   import usePresets from "@/options/presetComposition"
+  import PresetListItem from "@/options/PresetListItem";
+  import AppLocalizationText from "@/options/AppLocalizationText.vue";
 
   export default createComponent({
     components:{
-      PresetListItem
+      PresetListItem,
+      AppLocalizationText
     },
     setup(_, context: SetupContext) {
       //プリセット用の composition function を用意
       const {state, init, readPresets, createPreset, deletePreset} = usePresets();
-
-      //エラーメッセージ
-      const message = ref<string>();
 
       /**
        * プリセットを追加し、編集画面へ移動する
@@ -51,9 +53,6 @@
         createPreset()
           .then(index => {
             context.root.$router.push('/edit/'+String(index));
-          })
-          .catch(() => {
-            message.value = state.error;
           });
       };
 
@@ -64,9 +63,6 @@
         deletePreset(index)
           .then(() => {
             return readPresets();
-          })
-          .catch(() => {
-            message.value = state.error;
           });
       };
 
@@ -76,14 +72,11 @@
         init()
           .then(() => {
             return readPresets();
-          })
-          .catch(() => {
-            message.value = 'Chrome からプリセットの読み込みに失敗しました';
           });
       });
 
       //テンプレートに伝播
-      return {state, message, _create, _delete};
+      return {state, _create, _delete};
     }
   })
 </script>

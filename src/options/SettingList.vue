@@ -1,8 +1,8 @@
 <template>
   <article>
-    <h1>設定</h1>
+    <h1><AppLocalizationText msg="msg_setting"></AppLocalizationText></h1>
     <section>
-      <h2>設定変更</h2>
+      <h2><AppLocalizationText msg="msg_change_setting"></AppLocalizationText></h2>
       <ul
         v-if="isLoaded"
       >
@@ -10,7 +10,7 @@
           <p>ON / OFF</p>
           <div>
             <label>
-              <span>動作させる</span>
+              <span><AppLocalizationText msg="msg_enable"></AppLocalizationText></span>
               <input
                 v-model="state.enable"
                 type="checkbox"
@@ -21,11 +21,9 @@
           </div>
         </li>
         <li>
-          <p>保存先</p>
+          <p><AppLocalizationText msg="msg_storage"></AppLocalizationText></p>
           <div>
-            <p>※下記「設定をエクスポート」よりバックアップを行ってから変更することを推奨します</p>
-            <p>「sync」は保存できるプリセットデータの容量が小さい代わりに全ての Chrome に設定が同期されます</p>
-            <p>「local」はこの Chrome にしか設定が適用されない代わりにより多くの保存できるプリセットデータできます</p>
+            <AppLocalizationText msg="msg_storage_attentions"></AppLocalizationText>
             <label>
               <span>sync</span>
               <input
@@ -52,42 +50,41 @@
       <div
         v-else
       >
-        <p>設定読み込み中...</p>
+        <p><AppLocalizationText msg="msg_loading"></AppLocalizationText></p>
       </div>
     </section>
     <section>
-      <h2>情報</h2>
+      <h2><AppLocalizationText msg="msg_information"></AppLocalizationText></h2>
       <ul>
         <li>
-          <p>バージョン</p>
+          <p><AppLocalizationText msg="msg_version"></AppLocalizationText></p>
           <div>
             <p>{{state.version}}</p>
           </div>
         </li>
         <li>
-          <p>使用バイト数</p>
+          <p><AppLocalizationText msg="msg_used_byte"></AppLocalizationText></p>
           <div>
-            <p>現在使用中のバイト数: {{new Intl.NumberFormat().format(state.bytes)}}</p>
-            <p>残り使用可能なバイト数: {{new Intl.NumberFormat().format(remainingAvailableBytes)}}</p>
+            <p><AppLocalizationText msg="msg_using_byte"></AppLocalizationText>: {{new Intl.NumberFormat().format(state.bytes)}}</p>
+            <p><AppLocalizationText msg="残り使用可能なバイト数"></AppLocalizationText>: {{new Intl.NumberFormat().format(remainingAvailableBytes)}}</p>
           </div>
         </li>
       </ul>
     </section>
     <section>
-      <h2>バックアップ</h2>
+      <h2><AppLocalizationText msg="msg_backup"></AppLocalizationText></h2>
       <ul>
         <li>
-          <p>設定をエクスポート</p>
+          <p><AppLocalizationText msg="msg_export_settings"></AppLocalizationText></p>
           <div>
-            <p>プリセットデータ、各種設定を JSON 形式のファイルでエクスポートします</p>
-            <p><button @click="exportSettingJson">エクスポート</button></p>
+            <p><AppLocalizationText msg="msg_export_description"></AppLocalizationText></p>
+            <p><button @click="exportSettingJson"><AppLocalizationText msg="msg_export"></AppLocalizationText></button></p>
           </div>
         </li>
         <li>
-          <p>設定をインポート</p>
+          <p><AppLocalizationText msg="msg_export_settings"></AppLocalizationText></p>
           <div>
-            <p>エクスポートしたデータをインポートできます</p>
-            <p>プリセット・設定が全て書き換わるのでご注意ください</p>
+            <AppLocalizationText msg="msg_import_description"></AppLocalizationText>
             <p><input type="file" @change="importSettingJson"></p>
           </div>
         </li>
@@ -96,7 +93,7 @@
     <div>
       <router-link
         to="/"
-      >プリセット一覧へ戻る</router-link>
+      ><AppLocalizationText msg="msg_back"></AppLocalizationText></router-link>
     </div>
   </article>
 </template>
@@ -105,8 +102,10 @@
   import {ref, createComponent, onMounted, computed} from "@vue/composition-api";
   import useSetting from "@/options/settingComposition"
   import {STORAGE_LIMIT_SYNC, STORAGE_LIMIT_LOCAL} from "@/settings/settings";
+  import AppLocalizationText from "@/options/AppLocalizationText.vue";
 
   export default createComponent({
+    components: {AppLocalizationText},
     setup() {
       //設定用の composition function を用意
       const {state, getSettings, changeStorage, changeEnable, exportFileString, importFileString} = useSetting();

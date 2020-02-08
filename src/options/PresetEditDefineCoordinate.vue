@@ -1,20 +1,20 @@
 <template>
   <div>
     <label>
-      <span>絞り込み対象</span>
+      <span><AppLocalizationText msg="msg_refine_target"></AppLocalizationText></span>
       <select
         :value="coordinate.type"
         @input="changeType"
       >
-        <option value="style">スタイル</option>
-        <option value="augment">属性</option>
-        <option value="tag">タグ</option>
+        <option value="style"><AppLocalizationText msg="msg_style"></AppLocalizationText></option>
+        <option value="augment"><AppLocalizationText msg="msg_attribute"></AppLocalizationText></option>
+        <option value="tag"><AppLocalizationText msg="msg_tag"></AppLocalizationText></option>
       </select>
     </label>
     <label>
-      <span v-if="coordinate.type === 'style'">CSS プロパティ名</span>
-      <span v-else-if="coordinate.type === 'augment'">属性名</span>
-      <span v-else-if="coordinate.type === 'tag'">HTML タグ名</span>
+      <span v-if="coordinate.type === 'style'"><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></span>
+      <span v-else-if="coordinate.type === 'augment'"><AppLocalizationText msg="msg_html_attribute_name"></AppLocalizationText></span>
+      <span v-else-if="coordinate.type === 'tag'"><AppLocalizationText msg="msg_html_tag_name"></AppLocalizationText></span>
       <input
         :value="coordinate.key"
         type="text"
@@ -22,8 +22,8 @@
       >
     </label>
     <label v-if="coordinate.type !== 'tag'">
-      <span v-if="coordinate.type === 'style'">値</span>
-      <span v-else-if="coordinate.type === 'augment'">属性値</span>
+      <span v-if="coordinate.type === 'style'"><AppLocalizationText msg="msg_value"></AppLocalizationText></span>
+      <span v-else-if="coordinate.type === 'augment'"><AppLocalizationText msg="msg_attribute_name"></AppLocalizationText></span>
       <input
         :value="coordinate.values"
         type="text"
@@ -34,7 +34,7 @@
       <button
         type="button"
         @click="deleteCoordinate"
-      >削除</button>
+      ><AppLocalizationText msg="msg_delete"></AppLocalizationText></button>
     </label>
   </div>
 </template>
@@ -42,6 +42,7 @@
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
   import {Coordinate} from "@/settings/interface";
+  import AppLocalizationText from "@/options/AppLocalizationText.vue";
 
   type Prop = {
     coordinate: Coordinate,
@@ -49,6 +50,9 @@
   };
 
   export default createComponent({
+    components: {
+      AppLocalizationText
+    },
     props: {
       coordinate: {
         type: Object,

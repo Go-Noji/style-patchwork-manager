@@ -1,7 +1,7 @@
 <template>
   <div>
     <label>
-      <span>CSS プロパティ名</span>
+      <span><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></span>
       <input
         :value="data.property"
         type="text"
@@ -9,7 +9,7 @@
       >
     </label>
     <label>
-      <span>値</span>
+      <span><AppLocalizationText msg="msg_value"></AppLocalizationText></span>
       <input
         :value="data.values"
         type="text"
@@ -20,7 +20,7 @@
       <button
         type="button"
         @click="deleteStyle"
-      >削除</button>
+      ><AppLocalizationText msg="msg_delete"></AppLocalizationText></button>
     </label>
   </div>
 </template>
@@ -28,6 +28,7 @@
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
   import {Style} from "@/settings/interface";
+  import AppLocalizationText from "@/options/AppLocalizationText.vue";
 
   type Prop = {
     data: Style,
@@ -35,6 +36,7 @@
   };
 
   export default createComponent({
+    components: {AppLocalizationText},
     props: {
       data: {
         type: Object,

@@ -1,13 +1,13 @@
 <template>
   <article>
-    <h1>プリセットの編集</h1>
+    <h1><AppLocalizationText msg="msg_preset_edit"></AppLocalizationText></h1>
     <p>{{error}}</p>
     <div
       v-if="preset !== null"
     >
       <section>
         <label>
-          <h3>プリセット名</h3>
+          <h3><AppLocalizationText msg="msg_preset_name"></AppLocalizationText></h3>
           <input
             v-model="preset.title"
             type="text"
@@ -17,7 +17,7 @@
       </section>
       <section>
         <label>
-          <h3>対象URL(省略すると全サイトへ適用されます)</h3>
+          <h3><AppLocalizationText msg="msg_preset_target_url"></AppLocalizationText></h3>
           <input
             v-model="preset.url"
             typeof="text"
@@ -27,7 +27,7 @@
       </section>
       <section>
         <label>
-          <h3>管理色</h3>
+          <h3><AppLocalizationText msg="msg_preset_label_color"></AppLocalizationText></h3>
           <select
             v-model="preset.color"
             :style="'color: '+preset.color"
@@ -43,7 +43,7 @@
         </label>
       </section>
       <section>
-        <h3>スタイル定義</h3>
+        <h3><AppLocalizationText msg="msg_preset_style_definition"></AppLocalizationText></h3>
         <ul>
           <li
             v-for="(define, defineIndex) in preset.defines"
@@ -62,11 +62,11 @@
         <button
           type="button"
           @click="createDefine"
-        >追加する</button>
+        ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
       </section>
       <section>
         <label>
-          <h3>自由記述スタイルシート</h3>
+          <h3><AppLocalizationText msg="msg_preset_free_stylesheet"></AppLocalizationText></h3>
           <textarea
             v-model="preset.style"
             @change="updatePresetData('style', $event)"
@@ -77,9 +77,9 @@
     <div
       v-else
     >
-      <p>プリセット読み込み中...</p>
+      <p><AppLocalizationText msg="msg_loading"></AppLocalizationText></p>
     </div>
-    <p><router-link to="/">戻る</router-link></p>
+    <p><router-link to="/"><AppLocalizationText msg="msg_back"></AppLocalizationText></router-link></p>
   </article>
 </template>
 
@@ -89,10 +89,12 @@
   import usePresets from "@/options/presetComposition";
   import {Define, Preset} from "@/settings/interface";
   import PresetEditDefine from "@/options/PresetEditDefine";
+  import AppLocalizationText from "@/options/AppLocalizationText.vue";
 
   export default createComponent({
     components: {
-      PresetEditDefine
+      PresetEditDefine,
+      AppLocalizationText
     },
     setup(_, context: SetupContext) {
       //プリセットの対象インデックス

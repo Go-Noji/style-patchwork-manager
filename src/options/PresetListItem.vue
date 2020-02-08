@@ -4,7 +4,7 @@
       <h2>{{title}}</h2>
       <p
         v-if="url === ''"
-      >全サイトに適用</p>
+      ><AppLocalizationText msg="msg_apply_all_sites"></AppLocalizationText></p>
       <p
         v-else
       >URL: <span>{{url}}</span></p>
@@ -14,14 +14,15 @@
     ><a
       :href="url"
       target="_blank"
-    >設定先サイトへ</a></p>
-    <p><router-link :to="'/edit/'+String(index)">編集</router-link></p>
-    <p><button @click="deletePreset">削除</button></p>
+    ><AppLocalizationText msg="msg_to_destination_site"></AppLocalizationText></a></p>
+    <p><router-link :to="'/edit/'+String(index)"><AppLocalizationText msg="msg_edit"></AppLocalizationText></router-link></p>
+    <p><button @click="deletePreset"><AppLocalizationText msg="msg_delete"></AppLocalizationText></button></p>
   </section>
 </template>
 
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
+  import AppLocalizationText from "@/options/AppLocalizationText.vue";
 
   type Props = {
     index: number,
@@ -30,6 +31,7 @@
   };
 
   export default createComponent({
+    components: {AppLocalizationText},
     props: {
       index: {
         type: Number,

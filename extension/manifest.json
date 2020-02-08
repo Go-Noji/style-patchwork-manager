@@ -2,6 +2,7 @@
 	"name": "Botto(temp)",
 	"version": "0.0.1",
 	"description": "botto",
+	"default_locale": "en",
 	"background": {
 		"persistent": false,
 		"scripts": ["background.bundle.js"]

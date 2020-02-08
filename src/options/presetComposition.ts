@@ -72,7 +72,7 @@ export default () => {
       state.presets = presets;
     }
     catch (e) {
-      state.error = 'プリセットの追加に失敗しました';
+      state.error = 'msg_error_create_failed';
       return -1;
     }
     finally {
@@ -103,7 +103,7 @@ export default () => {
       state.presets = presets;
     }
     catch (e) {
-      state.error = 'Chrome からデータが読み込めませんでした。';
+      state.error = 'msg_error_read_failed';
     }
     finally {
       //操作中フラグを false にする
@@ -138,7 +138,7 @@ export default () => {
       state.presets = presets;
     }
     catch (e) {
-      state.error = '更新に失敗しました。';
+      state.error = 'msg_error_update_failed';
       return false;
     }
     finally {
@@ -176,7 +176,7 @@ export default () => {
       state.presets = presets;
     }
     catch (e) {
-      state.error = '削除に失敗しました。';
+      state.error = 'msg_error_delete_failed';
       return false;
     }
     finally {

@@ -3,14 +3,12 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext} from "@vue/composition-api";
+  import {createComponent} from "@vue/composition-api";
   import PresetList from "@/options/components/PresetList";
 
   export default createComponent({
     components: {
       PresetList
-    },
-    setup(props, context: SetupContext) {
     }
   })
 </script>

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-  import {computed, createComponent, onMounted, ref} from "@vue/composition-api";
+  import {createComponent, onMounted, ref} from "@vue/composition-api";
 
   type Prop = {msg: string, raw?: boolean};
 

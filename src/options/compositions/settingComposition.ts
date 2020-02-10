@@ -1,5 +1,5 @@
 import {reactive} from "@vue/composition-api";
-import {COLORS, DEFAULT_STORAGE_AREA, VERSION} from "@/settings/settings";
+import {DEFAULT_STORAGE_AREA, VERSION} from "@/settings/settings";
 import {isPreset, Preset} from "@/settings/interface";
 
 //保存先

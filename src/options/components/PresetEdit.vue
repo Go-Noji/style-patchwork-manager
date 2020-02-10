@@ -84,10 +84,10 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, reactive, SetupContext, onMounted, ref, computed} from "@vue/composition-api";
+  import {createComponent, SetupContext, onMounted, computed} from "@vue/composition-api";
   import {COLORS, DEFAULT_DEFINE, DEFAULT_DEFINE_COORDINATE, DEFAULT_DEFINE_STYLE} from "@/settings/settings";
   import usePresets from "@/options/compositions/presetComposition";
-  import {Define, Preset} from "@/settings/interface";
+  import {Define} from "@/settings/interface";
   import PresetEditDefine from "@/options/components/PresetEditDefine";
   import AppLocalizationText from "@/options/components/AppLocalizationText";
 

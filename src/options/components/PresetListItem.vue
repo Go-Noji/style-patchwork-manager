@@ -27,7 +27,7 @@
   type Props = {
     index: number,
     title: string,
-    url: number
+    url: string
   };
 
   export default createComponent({

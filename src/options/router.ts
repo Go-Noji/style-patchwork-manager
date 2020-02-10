@@ -1,8 +1,11 @@
 import Vue, {VueConstructor} from "vue";
 import Router from "vue-router";
-import PresetList from "@/options/components/PresetList.vue";
-import PresetEdit from "@/options/components/PresetEdit.vue";
-import SettingList from "@/options/components/SettingList.vue";
+import PresetList from "@/options/components/PresetList";
+import PresetEdit from "@/options/components/PresetEdit";
+import SettingList from "@/options/components/SettingList";
+import HeaderPresetList from "@/options/components/HeaderPresetList";
+import HeaderPresetEdit from "@/options/components/HeaderPresetEdit";
+import HeaderPresetSetting from "@/options/components/HeaderPresetSetting";
 Vue.use(Router);
 
 //TODO: 2020-01-15 まだ vu-composition-api が router に対する型エラーを解決できていないようなのでキャストで凌ぐ
@@ -12,17 +15,26 @@ export default new Router({
     {
       path: '/',
       name: 'PresetList',
-      component: PresetList as VueConstructor<Vue>
+      components: {
+        default: PresetList as VueConstructor<Vue>,
+        header: HeaderPresetList as VueConstructor<Vue>
+      }
     },
     {
       path: '/edit/:index',
       name: 'PresetEdit',
-      component: PresetEdit as VueConstructor<Vue>
+      components: {
+        default: PresetEdit as VueConstructor<Vue>,
+        header: HeaderPresetEdit as VueConstructor<Vue>
+      }
     },
     {
       path: '/setting',
       name: 'SettingList',
-      component: SettingList as VueConstructor<Vue>
+      components: {
+        default: SettingList as VueConstructor<Vue>,
+        header: HeaderPresetSetting as VueConstructor<Vue>
+      }
     },
   ]
 });

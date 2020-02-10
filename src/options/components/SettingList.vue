@@ -1,6 +1,5 @@
 <template>
-  <article>
-    <h1><AppLocalizationText msg="msg_setting"></AppLocalizationText></h1>
+  <article class="inner">
     <section>
       <h2><AppLocalizationText msg="msg_change_setting"></AppLocalizationText></h2>
       <ul

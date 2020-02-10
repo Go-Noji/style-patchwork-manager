@@ -1,0 +1,40 @@
+body{
+  background-color: #EEEEEE;
+  color: #212121;
+  font-size: 16px;
+}
+.container{
+  box-sizing: border-box;
+  background-color: #FAFAFA;
+}
+.inner{
+  padding: 30px;
+}
+
+.header{
+  margin-bottom: 30px;
+}
+.headerContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.headerSection{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.headerSetting{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.headerTitle{
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+.headerSeparator{
+  margin: 0;
+}

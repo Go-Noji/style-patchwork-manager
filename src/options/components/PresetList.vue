@@ -1,6 +1,5 @@
 <template>
-  <article>
-    <h1><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></h1>
+  <article class="inner">
     <div v-if="state.init">
       <ul v-if="state.presets.length !== 0">
         <li v-for="(preset, index) in state.presets">

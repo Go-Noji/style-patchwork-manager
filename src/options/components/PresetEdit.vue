@@ -1,6 +1,5 @@
 <template>
-  <article>
-    <h1><AppLocalizationText msg="msg_preset_edit"></AppLocalizationText></h1>
+  <article class="inner">
     <p>{{error}}</p>
     <div
       v-if="preset !== null"

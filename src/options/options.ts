@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueCompositionApi from "@vue/composition-api";
-import AppContainer from "@/options/components/AppContainer";
+import AppContainer from "@/options/components/AppContainer.vue";
 import router from "@/options/router"
 import 'sanitize.css/sanitize.css';
 import '@/options/style.scss'

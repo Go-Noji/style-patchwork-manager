@@ -89,7 +89,7 @@
   import usePresets from "@/options/presetComposition";
   import {Define, Preset} from "@/settings/interface";
   import PresetEditDefine from "@/options/PresetEditDefine";
-  import AppLocalizationText from "@/options/AppLocalizationText.vue";
+  import AppLocalizationText from "@/options/AppLocalizationText";
 
   export default createComponent({
     components: {

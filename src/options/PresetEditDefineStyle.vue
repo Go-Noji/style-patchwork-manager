@@ -28,7 +28,7 @@
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
   import {Style} from "@/settings/interface";
-  import AppLocalizationText from "@/options/AppLocalizationText.vue";
+  import AppLocalizationText from "@/options/AppLocalizationText";
 
   type Prop = {
     data: Style,

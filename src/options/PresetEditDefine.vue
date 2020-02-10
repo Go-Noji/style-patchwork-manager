@@ -52,7 +52,7 @@
   import {Coordinate, Define, Style} from "@/settings/interface";
   import PresetEditDefineCoordinate from "@/options/PresetEditDefineCoordinate";
   import PresetEditDefineStyle from "@/options/PresetEditDefineStyle";
-  import AppLocalizationText from "@/options/AppLocalizationText.vue";
+  import AppLocalizationText from "@/options/AppLocalizationText";
 
   type Prop = {
     index: number,

@@ -33,6 +33,31 @@ module.exports = {
 				loader: 'vue-loader',
 			},
 			{
+				test: /\.scss/,
+				use: [
+					'vue-style-loader',
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							url: false,
+							importLoaders: 2
+						},
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: [
+								require('autoprefixer')({grid: true})
+							]
+						}
+					},
+					{
+						loader: 'sass-loader'
+					}
+				],
+			},
+			{
 				test: /\.css$/,
 				// 配列最後尾のローダーから実行される
 				use: ['vue-style-loader', 'css-loader'],

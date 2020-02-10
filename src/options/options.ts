@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueCompositionApi from "@vue/composition-api";
 import AppContainer from "@/options/components/AppContainer";
 import router from "@/options/router"
+import 'sanitize.css/sanitize.css';
+import '@/options/style.scss'
 
 Vue.use(VueCompositionApi);
 

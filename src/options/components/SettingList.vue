@@ -100,9 +100,9 @@
 
 <script lang="ts">
   import {ref, createComponent, onMounted, computed} from "@vue/composition-api";
-  import useSetting from "@/options/settingComposition"
+  import useSetting from "@/options/compositions/settingComposition"
   import {STORAGE_LIMIT_SYNC, STORAGE_LIMIT_LOCAL} from "@/settings/settings";
-  import AppLocalizationText from "@/options/AppLocalizationText";
+  import AppLocalizationText from "@/options/components/AppLocalizationText";
 
   export default createComponent({
     components: {AppLocalizationText},

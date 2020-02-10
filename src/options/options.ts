@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueCompositionApi from "@vue/composition-api";
-import AppContainer from "@/options/AppContainer";
+import AppContainer from "@/options/components/AppContainer";
 import router from "@/options/router"
 
 Vue.use(VueCompositionApi);

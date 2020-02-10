@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
-  import PresetList from "@/options/PresetList";
+  import PresetList from "@/options/components/PresetList";
 
   export default createComponent({
     components: {

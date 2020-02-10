@@ -7,7 +7,7 @@ module.exports = {
 	entry: {
 		page: "./src/page.ts",
 		background: "./src/background.ts",
-		options: "./src/options.ts",
+		options: "./src/options/options.ts",
 	},
 	output: {
 		filename: '[name].bundle.js',

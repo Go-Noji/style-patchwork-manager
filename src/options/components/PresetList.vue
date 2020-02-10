@@ -33,9 +33,9 @@
 
 <script lang="ts">
   import {createComponent, onMounted, SetupContext} from "@vue/composition-api";
-  import usePresets from "@/options/presetComposition"
-  import PresetListItem from "@/options/PresetListItem";
-  import AppLocalizationText from "@/options/AppLocalizationText";
+  import usePresets from "@/options/compositions/presetComposition"
+  import PresetListItem from "@/options/components/PresetListItem";
+  import AppLocalizationText from "@/options/components/AppLocalizationText";
 
   export default createComponent({
     components:{

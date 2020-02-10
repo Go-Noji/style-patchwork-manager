@@ -50,9 +50,9 @@
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
   import {Coordinate, Define, Style} from "@/settings/interface";
-  import PresetEditDefineCoordinate from "@/options/PresetEditDefineCoordinate";
-  import PresetEditDefineStyle from "@/options/PresetEditDefineStyle";
-  import AppLocalizationText from "@/options/AppLocalizationText";
+  import PresetEditDefineCoordinate from "@/options/components/PresetEditDefineCoordinate.vue";
+  import PresetEditDefineStyle from "@/options/components/PresetEditDefineStyle.vue";
+  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
 
   type Prop = {
     index: number,

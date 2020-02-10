@@ -86,10 +86,10 @@
 <script lang="ts">
   import {createComponent, reactive, SetupContext, onMounted, ref, computed} from "@vue/composition-api";
   import {COLORS, DEFAULT_DEFINE, DEFAULT_DEFINE_COORDINATE, DEFAULT_DEFINE_STYLE} from "@/settings/settings";
-  import usePresets from "@/options/presetComposition";
+  import usePresets from "@/options/compositions/presetComposition";
   import {Define, Preset} from "@/settings/interface";
-  import PresetEditDefine from "@/options/PresetEditDefine";
-  import AppLocalizationText from "@/options/AppLocalizationText";
+  import PresetEditDefine from "@/options/components/PresetEditDefine";
+  import AppLocalizationText from "@/options/components/AppLocalizationText";
 
   export default createComponent({
     components: {

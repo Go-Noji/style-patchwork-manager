@@ -14,7 +14,12 @@
     ><a
       :href="url"
       target="_blank"
-    ><AppLocalizationText msg="msg_to_destination_site"></AppLocalizationText></a></p>
+    ><AppLocalizationText msg="msg_to_destination_site"></AppLocalizationText><img
+      svg-inline
+      class="linkIcon"
+      src="@/assets/link.svg"
+      alt="setting"
+    ></a></p>
     <p><router-link :to="'/edit/'+String(index)"><AppLocalizationText msg="msg_edit"></AppLocalizationText></router-link></p>
     <p><button @click="deletePreset"><AppLocalizationText msg="msg_delete"></AppLocalizationText></button></p>
   </section>
@@ -61,5 +66,8 @@
 </script>
 
 <style scoped>
-
+  .linkIcon{
+    width: 16px;
+    margin: 0 10px;
+  }
 </style>

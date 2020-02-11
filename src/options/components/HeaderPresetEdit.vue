@@ -2,7 +2,12 @@
   <div class="headerContainer">
     <nav class="headerSection">
       <AppHeaderLink to="/"><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></AppHeaderLink>
-      <p class="headerSeparator">&gt;</p>
+      <p class="headerSeparator"><img
+        svg-inline
+        class="arrowIcon"
+        src="@/assets/arrow.svg"
+        alt="setting"
+      ></p>
       <AppHeaderLink
         v-if="preset === null"
         to=""
@@ -56,5 +61,7 @@
 </script>
 
 <style scoped lang="scss">
-
+  .arrowIcon{
+    width: 20px;
+  }
 </style>

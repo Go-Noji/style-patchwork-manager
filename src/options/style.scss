@@ -3,6 +3,7 @@ body{
   color: #212121;
   font-size: 16px;
 }
+
 .container{
   box-sizing: border-box;
   background-color: #FAFAFA;
@@ -37,4 +38,8 @@ body{
 }
 .headerSeparator{
   margin: 0;
+}
+.headerSettingIcon{
+  width: 30px;
+  color: #212121;
 }

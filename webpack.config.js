@@ -30,7 +30,10 @@ module.exports = {
 				// 単一ファイルコンポーネントは vue-loader が処理
 				test: /\.vue$/,
 				exclude: /node_modules/,
-				loader: 'vue-loader',
+				use: [
+					'vue-loader',
+					'vue-svg-inline-loader'
+				],
 			},
 			{
 				test: /\.scss/,
@@ -62,6 +65,10 @@ module.exports = {
 				// 配列最後尾のローダーから実行される
 				use: ['vue-style-loader', 'css-loader'],
 			},
+			{
+				test: /\.svg$/,
+				loader: 'svg-inline-loader'
+			}
 		],
 	},
 	resolve: {

@@ -1,37 +1,38 @@
 <template>
-  <div class="inner headerContainer">
+  <div class="headerContainer">
     <nav class="headerSection">
-      <router-link
-        class="headerTitle"
-        to="/"
-      ><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></router-link>
-      <p class="headerSeparator">&nbsp;&gt;&nbsp;</p>
-      <h1
-        class="headerTitle"
+      <AppHeaderLink to="/"><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></AppHeaderLink>
+      <p class="headerSeparator">&gt;</p>
+      <AppHeaderLink
         v-if="preset === null"
-      ><AppLocalizationText msg="msg_loading"></AppLocalizationText></h1>
-      <h1
+        to=""
+      ><AppLocalizationText msg="msg_loading"></AppLocalizationText></AppHeaderLink>
+      <AppHeaderLink
         v-else
-        class="headerTitle"
-      >{{preset.title}}</h1>
+        to=""
+      >{{preset.title}}</AppHeaderLink>
     </nav>
     <nav class="headerSection">
-      <router-link
-        class="headerTitle"
-        to="/setting"
-      ><AppLocalizationText msg="msg_setting"></AppLocalizationText></router-link>
+      <AppHeaderLink to="/setting"><img
+        svg-inline
+        class="headerSettingIcon"
+        src="@/assets/setting.svg"
+        alt="setting"
+      ></AppHeaderLink>
     </nav>
   </div>
 </template>
 
 <script lang="ts">
   import {computed, createComponent, onMounted, SetupContext} from "@vue/composition-api";
-  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppLocalizationText from "@/options/components/AppLocalizationText";
+  import AppHeaderLink from "@/options/components/AppHeaderLink";
   import usePresets from "@/options/compositions/presetComposition";
 
   export default createComponent({
     components: {
-      AppLocalizationText
+      AppLocalizationText,
+      AppHeaderLink
     },
     setup(_, context: SetupContext) {
       //プリセットの対象インデックス

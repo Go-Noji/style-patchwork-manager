@@ -1,24 +1,28 @@
 <template>
-  <div class="inner headerContainer">
+  <div class="headerContainer">
     <div class="headerSection">
-      <router-link
-        class="headerTitle"
-        to="/"
-      ><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></router-link>
+      <AppHeaderLink to="/"><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></AppHeaderLink>
     </div>
     <div class="headerSection">
-      <h1 class="headerTitle"><AppLocalizationText msg="msg_setting"></AppLocalizationText></h1>
+      <AppHeaderLink to=""><img
+        svg-inline
+        class="headerSettingIcon"
+        src="@/assets/setting.svg"
+        alt="setting"
+      ></AppHeaderLink>
     </div>
   </div>
 </template>
 
 <script lang="ts">
   import {createComponent} from "@vue/composition-api";
-  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppLocalizationText from "@/options/components/AppLocalizationText";
+  import AppHeaderLink from "@/options/components/AppHeaderLink";
 
   export default createComponent({
     components: {
-      AppLocalizationText
+      AppLocalizationText,
+      AppHeaderLink
     }
   });
 </script>

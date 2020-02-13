@@ -1,7 +1,10 @@
 <template>
   <div class="headerContainer">
     <nav class="headerSection">
-      <AppHeaderLink to="/"><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></AppHeaderLink>
+      <AppHeaderLink
+        to="/"
+        color="#9E9E9E"
+      ><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></AppHeaderLink>
       <p class="headerSeparator"><img
         svg-inline
         class="arrowIcon"
@@ -11,14 +14,19 @@
       <AppHeaderLink
         v-if="preset === null"
         to=""
+        color="#9E9E9E"
       ><AppLocalizationText msg="msg_loading"></AppLocalizationText></AppHeaderLink>
       <AppHeaderLink
         v-else
         to=""
+        :color="preset.color"
       >{{preset.title}}</AppHeaderLink>
     </nav>
     <nav class="headerSection">
-      <AppHeaderLink to="/setting"><img
+      <AppHeaderLink
+        to="/setting"
+        color="#9E9E9E"
+      ><img
         svg-inline
         class="headerSettingIcon"
         src="@/assets/setting.svg"

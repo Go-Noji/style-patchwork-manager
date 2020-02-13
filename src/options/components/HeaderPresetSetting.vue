@@ -1,10 +1,16 @@
 <template>
   <div class="headerContainer">
     <div class="headerSection">
-      <AppHeaderLink to="/"><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></AppHeaderLink>
+      <AppHeaderLink
+        to="/"
+        color="#9E9E9E"
+      ><AppLocalizationText msg="msg_preset_list"></AppLocalizationText></AppHeaderLink>
     </div>
     <div class="headerSection">
-      <AppHeaderLink to=""><img
+      <AppHeaderLink
+        to=""
+        color="#9E9E9E"
+      ><img
         svg-inline
         class="headerSettingIcon"
         src="@/assets/setting.svg"

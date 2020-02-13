@@ -12,6 +12,7 @@
     <div class="headerLinkUnderBarWrapper">
       <span
         :class="{headerLinkUnderBarCurrent: current}"
+        :style="'background-color:'+color"
         class="headerLinkUnderBar"
       ></span>
     </div>
@@ -22,7 +23,8 @@
   import {createComponent, ref, onMounted} from "@vue/composition-api";
 
   type Props = {
-    to: string
+    to: string,
+    color: string
   };
 
   export default createComponent({
@@ -30,7 +32,11 @@
       to: {
         type: String,
         required: true
-      }
+      },
+      color: {
+        type: String,
+        required: true
+      },
     },
     setup(props: Props) {
       //現在表示中のリンクか判定
@@ -50,6 +56,12 @@
 </script>
 
 <style scoped lang="scss">
+  .headerTitle{
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
   .headerLinkWrapper{
     position: relative;
     box-sizing: border-box;
@@ -67,8 +79,7 @@
     transition: width .2s ease-out;
     display: block;
     width: 0%;
-    height: 4px;
-    background-color: #9E9E9E;
+    height: 5px;
   }
   .headerLinkUnderBarCurrent{
     width: 100%;

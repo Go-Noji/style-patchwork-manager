@@ -101,7 +101,7 @@
   import {ref, createComponent, onMounted, computed} from "@vue/composition-api";
   import useSetting from "@/options/compositions/settingComposition"
   import {STORAGE_LIMIT_SYNC, STORAGE_LIMIT_LOCAL} from "@/settings/settings";
-  import AppLocalizationText from "@/options/components/AppLocalizationText";
+  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
 
   export default createComponent({
     components: {AppLocalizationText},

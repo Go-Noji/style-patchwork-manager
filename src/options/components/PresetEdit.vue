@@ -87,8 +87,8 @@
   import {COLORS, DEFAULT_DEFINE, DEFAULT_DEFINE_COORDINATE, DEFAULT_DEFINE_STYLE} from "@/settings/settings";
   import usePresets from "@/options/compositions/presetComposition";
   import {Define} from "@/settings/interface";
-  import PresetEditDefine from "@/options/components/PresetEditDefine";
-  import AppLocalizationText from "@/options/components/AppLocalizationText";
+  import PresetEditDefine from "@/options/components/PresetEditDefine.vue";
+  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
 
   export default createComponent({
     components: {

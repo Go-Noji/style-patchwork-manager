@@ -11,8 +11,8 @@
 
 <script lang="ts">
   import {createComponent} from "@vue/composition-api";
-  import PresetList from "@/options/components/PresetList";
-  import TheHeader from "@/options/components/TheHeader";
+  import PresetList from "@/options/components/PresetList.vue";
+  import TheHeader from "@/options/components/TheHeader.vue";
 
   export default createComponent({
     components: {

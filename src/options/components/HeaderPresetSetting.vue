@@ -22,8 +22,8 @@
 
 <script lang="ts">
   import {createComponent} from "@vue/composition-api";
-  import AppLocalizationText from "@/options/components/AppLocalizationText";
-  import AppHeaderLink from "@/options/components/AppHeaderLink";
+  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppHeaderLink from "@/options/components/AppHeaderLink.vue";
 
   export default createComponent({
     components: {

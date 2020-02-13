@@ -27,7 +27,7 @@
 
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
-  import AppLocalizationText from "@/options/components/AppLocalizationText";
+  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
 
   type Props = {
     index: number,

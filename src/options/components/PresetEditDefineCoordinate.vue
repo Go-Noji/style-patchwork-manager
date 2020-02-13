@@ -42,7 +42,7 @@
 <script lang="ts">
   import {createComponent, SetupContext} from "@vue/composition-api";
   import {Coordinate} from "@/settings/interface";
-  import AppLocalizationText from "@/options/components/AppLocalizationText";
+  import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
 
   type Prop = {
     coordinate: Coordinate,

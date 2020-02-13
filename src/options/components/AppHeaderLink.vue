@@ -65,6 +65,7 @@
   .headerLinkWrapper{
     position: relative;
     box-sizing: border-box;
+    height: 92px;
   }
   .headerLinkUnderBarWrapper{
     display: flex;

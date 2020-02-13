@@ -11,15 +11,19 @@
     ><slot></slot></h1>
     <div class="headerLinkUnderBarWrapper">
       <span
-        v-show="to === ''"
-        class="headerLinkUnderBarCurrent"
+        :class="{headerLinkUnderBarCurrent: current}"
+        class="headerLinkUnderBar"
       ></span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import {createComponent} from "@vue/composition-api";
+  import {createComponent, ref, onMounted} from "@vue/composition-api";
+
+  type Props = {
+    to: string
+  };
 
   export default createComponent({
     props: {
@@ -27,6 +31,20 @@
         type: String,
         required: true
       }
+    },
+    setup(props: Props) {
+      //現在表示中のリンクか判定
+      const current = ref(false);
+
+      //表示中のリンクかの判定は 0.1 秒待ってから行う
+      onMounted(() => {
+        setTimeout(() => {
+          current.value = props.to === ''
+        }, 100);
+      });
+
+      //伝播
+      return {current};
     }
   });
 </script>
@@ -37,16 +55,22 @@
     box-sizing: border-box;
   }
   .headerLinkUnderBarWrapper{
+    display: flex;
+    justify-content: center;
     position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
     padding: 0 30px;
   }
-  .headerLinkUnderBarCurrent{
+  .headerLinkUnderBar{
+    transition: width .2s ease-out;
     display: block;
-    width: 100%;
+    width: 0%;
     height: 4px;
     background-color: #9E9E9E;
+  }
+  .headerLinkUnderBarCurrent{
+    width: 100%;
   }
 </style>

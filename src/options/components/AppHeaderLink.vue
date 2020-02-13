@@ -61,14 +61,6 @@
     font-size: 18px;
     font-weight: 700;
     margin: 0;
-    text-decoration: none;
-    color: #212121;
-    &:active{
-      color: #212121;
-    }
-    &:visited{
-      color: #212121;
-    }
   }
   .headerLinkWrapper{
     position: relative;

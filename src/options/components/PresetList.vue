@@ -1,31 +1,31 @@
 <template>
   <article class="inner">
     <div v-if="state.init">
-      <ul v-if="state.presets.length !== 0">
-        <li v-for="(preset, index) in state.presets">
+      <ul class="presetBox">
+        <li
+          v-for="(preset, index) in state.presets"
+          class="presetList"
+        >
           <PresetListItem
             :index="index"
             :title="preset.title"
             :url="preset.url"
+            :color="preset.color"
             @delete-preset="_delete"
           ></PresetListItem>
         </li>
+        <li class="presetList presetListCreate">
+          <button
+            @click="_create"
+            class="presetCreateButton"
+          ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
+        </li>
       </ul>
-      <p v-else><AppLocalizationText
-        msg="msg_empty_preset_list"
-        key="msg_empty_preset_list"
-      ></AppLocalizationText></p>
-      <div><button @click="_create"><AppLocalizationText msg="msg_add"></AppLocalizationText></button></div>
     </div>
     <div
       v-else
     >
       <p><AppLocalizationText msg="msg_loading"></AppLocalizationText></p>
-    </div>
-    <div>
-      <router-link
-        to="/setting"
-      ><AppLocalizationText msg="msg_setting"></AppLocalizationText></router-link>
     </div>
   </article>
 </template>
@@ -80,6 +80,31 @@
   })
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .presetBox{
+    margin: 0;
+    padding: 0;
+  }
+  .presetList{
+    border-top: 1px solid #CFD8DC;
+    padding: 10px 0;
+    margin: 0;
+    list-style-type: none;
+    &:first-child{
+      border-top: 0;
+    }
+  }
+  .presetListCreate{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .presetCreateButton{
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
 </style>

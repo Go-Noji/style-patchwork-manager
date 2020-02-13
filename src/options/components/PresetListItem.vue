@@ -1,27 +1,43 @@
 <template>
-  <section>
-    <a>
-      <h2>{{title}}</h2>
-      <p
-        v-if="url === ''"
-      ><AppLocalizationText msg="msg_apply_all_sites"></AppLocalizationText></p>
-      <p
-        v-else
-      >URL: <span>{{url}}</span></p>
-    </a>
-    <p
-      v-if="url !== ''"
-    ><a
-      :href="url"
-      target="_blank"
-    ><AppLocalizationText msg="msg_to_destination_site"></AppLocalizationText><img
-      svg-inline
-      class="linkIcon"
-      src="@/assets/link.svg"
-      alt="setting"
-    ></a></p>
-    <p><router-link :to="'/edit/'+String(index)"><AppLocalizationText msg="msg_edit"></AppLocalizationText></router-link></p>
-    <p><button @click="deletePreset"><AppLocalizationText msg="msg_delete"></AppLocalizationText></button></p>
+  <section
+    :style="'border-left: 5px solid '+color"
+    class="presetListItemWrapper"
+  >
+    <div class="presetListItemDeleteButtonWrapper">
+      <button
+        class="presetListItemDeleteButton"
+        @click="deletePreset"
+      ><img
+        svg-inline
+        class="presetListItemDeleteButtonImage"
+        src="@/assets/cancel.svg"
+      ></button>
+    </div>
+    <div class="presetListItemTitleWrapper">
+      <router-link
+        :to="'/edit/'+String(index)"
+        class="presetListItemEditLink"
+      >
+        <h2 class="presetListItemTitle">{{title}}</h2>
+      </router-link>
+      <p v-if="url === ''">
+        <AppLocalizationText msg="msg_apply_all_sites"></AppLocalizationText>
+      </p>
+      <p v-else>
+        <a
+          :href="url"
+          target="_blank"
+        >
+          <span>{{url}}</span>
+          <img
+            svg-inline
+            class="presetListItemLinkIcon"
+            src="@/assets/link.svg"
+            alt="setting"
+          >
+        </a>
+      </p>
+    </div>
   </section>
 </template>
 
@@ -32,7 +48,8 @@
   type Props = {
     index: number,
     title: string,
-    url: string
+    url: string,
+    color: string,
   };
 
   export default createComponent({
@@ -47,6 +64,10 @@
         required: true
       },
       url: {
+        type: String,
+        required: true
+      },
+      color: {
         type: String,
         required: true
       },
@@ -65,9 +86,40 @@
   });
 </script>
 
-<style scoped>
-  .linkIcon{
+<style lang="scss" scoped>
+  .presetListItemWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .presetListItemTitleWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+  }
+  .presetListItemEditLink{
+    max-width: 80%;
+  }
+  .presetListItemTitle{
+    font-size: 18px;
+  }
+  .presetListItemLinkIcon{
     width: 16px;
     margin: 0 10px;
+  }
+  .presetListItemDeleteButtonWrapper{
+    width: 60px;
+    flex-shrink: 1;
+  }
+  .presetListItemDeleteButton{
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 15px;
+  }
+  .presetListItemDeleteButtonImage{
+    width: 20px;
   }
 </style>

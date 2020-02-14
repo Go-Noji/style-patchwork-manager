@@ -15,16 +15,17 @@
           ></PresetListItem>
         </li>
         <li class="presetList presetListCreate">
-          <button
-            @click="_create"
-            class="presetCreateButton"
-          ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
+          <div class="presetListButtonWrapper">
+            <AppButton
+              keyColor="#212121"
+              baseColor="#FAFAFA"
+              @click-button="_create"
+            ><AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>
+          </div>
         </li>
       </ul>
     </div>
-    <div
-      v-else
-    >
+    <div v-else>
       <p><AppLocalizationText msg="msg_loading"></AppLocalizationText></p>
     </div>
   </article>
@@ -35,11 +36,13 @@
   import usePresets from "@/options/compositions/presetComposition"
   import PresetListItem from "@/options/components/PresetListItem.vue";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppButton from "@/options/components/AppButton.vue";
 
   export default createComponent({
     components:{
       PresetListItem,
-      AppLocalizationText
+      AppLocalizationText,
+      AppButton
     },
     setup(_, context: SetupContext) {
       //プリセット用の composition function を用意
@@ -98,13 +101,7 @@
     display: flex;
     justify-content: flex-end;
   }
-  .presetCreateButton{
-    appearance: none;
-    border: 0;
-    background-color: transparent;
-    cursor: pointer;
+  .presetListButtonWrapper{
     margin: 10px 0;
-    font-size: 18px;
-    font-weight: 700;
   }
 </style>

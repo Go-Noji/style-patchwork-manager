@@ -100,6 +100,7 @@
   }
   .presetListItemEditLink{
     max-width: 80%;
+    flex-grow: 1;
   }
   .presetListItemTitle{
     font-size: 18px;

@@ -65,7 +65,7 @@
           <p><AppLocalizationText msg="msg_used_byte"></AppLocalizationText></p>
           <div>
             <p><AppLocalizationText msg="msg_using_byte"></AppLocalizationText>: {{new Intl.NumberFormat().format(state.bytes)}}</p>
-            <p><AppLocalizationText msg="残り使用可能なバイト数"></AppLocalizationText>: {{new Intl.NumberFormat().format(remainingAvailableBytes)}}</p>
+            <p><AppLocalizationText msg="msg_remaining_byte"></AppLocalizationText>: {{new Intl.NumberFormat().format(remainingAvailableBytes)}}</p>
           </div>
         </li>
       </ul>
@@ -81,7 +81,7 @@
           </div>
         </li>
         <li>
-          <p><AppLocalizationText msg="msg_export_settings"></AppLocalizationText></p>
+          <p><AppLocalizationText msg="msg_import_settings"></AppLocalizationText></p>
           <div>
             <AppLocalizationText msg="msg_import_description"></AppLocalizationText>
             <p><input type="file" @change="importSettingJson"></p>

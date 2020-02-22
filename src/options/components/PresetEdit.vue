@@ -4,49 +4,69 @@
     <div
       v-if="preset !== null"
     >
-      <section>
+      <section class="formSection">
         <label>
-          <h3><AppLocalizationText msg="msg_preset_name"></AppLocalizationText></h3>
+          <h3 class="formHeader"><AppLocalizationText msg="msg_preset_name"></AppLocalizationText></h3>
           <input
+            class="formInput"
             v-model="preset.title"
             type="text"
             @change="updatePresetData('title', $event)"
           >
         </label>
       </section>
-      <section>
+      <section class="formSection">
         <label>
-          <h3><AppLocalizationText msg="msg_preset_target_url"></AppLocalizationText></h3>
+          <h3 class="formHeader"><AppLocalizationText msg="msg_preset_target_url"></AppLocalizationText></h3>
           <input
+            class="formInput"
             v-model="preset.url"
-            typeof="text"
+            type="text"
             @change="updatePresetData('url', $event)"
           >
         </label>
       </section>
-      <section>
-        <label>
-          <h3><AppLocalizationText msg="msg_preset_label_color"></AppLocalizationText></h3>
-          <select
-            v-model="preset.color"
-            :style="'color: '+preset.color"
-            @input="updatePresetData('color', $event)"
+      <section class="formSection">
+        <h3 class="formHeader"><AppLocalizationText msg="msg_preset_label_color"></AppLocalizationText></h3>
+        <ul class="formColorBox">
+          <li
+            v-for="(color, name) in colors"
+            :key="name"
+            class="formColorList"
           >
-            <option
-              v-for="(color, name) in colors"
-              :key="name"
-              :value="name"
-              :style="'color: '+color"
-            >{{name}}({{color}})</option>
-          </select>
-        </label>
+            <label
+              class="formColorLabel"
+              :style="preset.color === name ? 'background-color: '+color : 'opacity: .5;background-color: '+color"
+            >
+              <input
+                v-model="preset.color"
+                :value="name"
+                type="checkbox"
+                class="formColorCheckbox"
+                @change="updatePresetData('color', $event)"
+              >
+              <p class="formColorText">
+                <span v-show="preset.color === name">
+                  <img
+                    svg-inline
+                    class="formColorCheckIcon"
+                    src="@/assets/check.svg"
+                    alt="checked"
+                  >
+                </span>
+                <span>{{name}}</span>
+              </p>
+            </label>
+          </li>
+        </ul>
       </section>
-      <section>
-        <h3><AppLocalizationText msg="msg_preset_style_definition"></AppLocalizationText></h3>
-        <ul>
+      <section class="formSection">
+        <h3 class="formHeader"><AppLocalizationText msg="msg_preset_style_definition"></AppLocalizationText></h3>
+        <ul class="editBox">
           <li
             v-for="(define, defineIndex) in preset.defines"
             :key="'define_'+defineIndex"
+            class="editList"
           >
             <PresetEditDefine
               :index="defineIndex"
@@ -63,10 +83,11 @@
           @click="createDefine"
         ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
       </section>
-      <section>
+      <section class="formSection">
         <label>
-          <h3><AppLocalizationText msg="msg_preset_free_stylesheet"></AppLocalizationText></h3>
+          <h3 class="formHeader"><AppLocalizationText msg="msg_preset_free_stylesheet"></AppLocalizationText></h3>
           <textarea
+            class="formInput"
             v-model="preset.style"
             @change="updatePresetData('style', $event)"
           ></textarea>
@@ -78,7 +99,6 @@
     >
       <p><AppLocalizationText msg="msg_loading"></AppLocalizationText></p>
     </div>
-    <p><router-link to="/"><AppLocalizationText msg="msg_back"></AppLocalizationText></router-link></p>
   </article>
 </template>
 
@@ -235,5 +255,53 @@
 </script>
 
 <style scoped>
-
+  .formHeader{
+    font-size: 18px;
+    margin: 0 0 10px 0;
+  }
+  .formSection{
+    margin-top: 40px;
+  }
+  .formSection:first-child{
+    margin-top: 0;
+  }
+  .formColorBox{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+  }
+  .formColorList{
+    list-style-type: none;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .formColorLabel{
+    display: block;
+    padding: 10px;
+    min-width: 50px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .formColorCheckbox{
+    display: none;
+  }
+  .formColorText{
+    color: #fff;
+    margin: 0;
+  }
+  .formColorCheckIcon{
+    display: inline;
+    width: 25px;
+    padding: 0 5px;
+  }
+  .editBox{
+    margin: 0;
+    padding: 0;
+  }
+  .editList{
+    list-style-type: none;
+  }
 </style>

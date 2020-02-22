@@ -47,3 +47,48 @@ a{
   width: 30px;
   color: #212121;
 }
+
+.formInput{
+  padding: 5px 10px;
+  background: #fff;
+  border: #607D8B solid 1px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 350px;
+  flex-grow: 1;
+}
+.formWrapper{
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  border-left: #9E9E9E solid 5px;
+}
+.formFormArea{
+  flex-grow: 1;
+}
+.formItemSection{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+.formItemSection:first-child{
+  margin-top: 0;
+}
+.formHeader{
+  width: 200px;
+  margin: 0 20px 0 0;
+}
+.formDeleteButtonWrapper{
+  width: 60px;
+  flex-shrink: 1;
+}
+.formDeleteButton{
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 15px;
+}
+.formDeleteButtonImage{
+  width: 20px;
+}

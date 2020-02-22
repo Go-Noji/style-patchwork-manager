@@ -1,50 +1,68 @@
 <template>
-  <div>
-    <label>
-      <span><AppLocalizationText msg="msg_refine_target"></AppLocalizationText></span>
-      <select
-        :value="coordinate.type"
-        @input="changeType"
-      >
-        <option value="style"><AppLocalizationText msg="msg_style"></AppLocalizationText></option>
-        <option value="augment"><AppLocalizationText msg="msg_attribute"></AppLocalizationText></option>
-        <option value="tag"><AppLocalizationText msg="msg_tag"></AppLocalizationText></option>
-      </select>
-    </label>
-    <label>
-      <span
-        v-if="coordinate.type === 'style'"
-        key="styleTitle"
-      ><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></span>
-      <span
-        v-else-if="coordinate.type === 'augment'"
-        key="augmentTitle"
-      ><AppLocalizationText msg="msg_html_attribute_name"></AppLocalizationText></span>
-      <span
-        v-else-if="coordinate.type === 'tag'"
-        key="tagTitle"
-      ><AppLocalizationText msg="msg_html_tag_name"></AppLocalizationText></span>
-      <input
-        :value="coordinate.key"
-        type="text"
-        @change="changeKey"
-      >
-    </label>
-    <label v-if="coordinate.type !== 'tag'">
-      <span v-if="coordinate.type === 'style'"><AppLocalizationText msg="msg_value"></AppLocalizationText></span>
-      <span v-else-if="coordinate.type === 'augment'"><AppLocalizationText msg="msg_attribute_name"></AppLocalizationText></span>
-      <input
-        :value="coordinate.values"
-        type="text"
-        @change="changeValue"
-      >
-    </label>
-    <label>
+  <div class="formWrapper">
+    <div class="formDeleteButtonWrapper">
       <button
-        type="button"
+        class="formDeleteButton"
         @click="deleteCoordinate"
-      ><AppLocalizationText msg="msg_delete"></AppLocalizationText></button>
-    </label>
+      ><img
+        svg-inline
+        class="formDeleteButtonImage"
+        src="@/assets/cancel.svg"
+      ></button>
+    </div>
+    <div class="formFormArea">
+      <label class="formItemSection">
+        <p class="formHeader"><AppLocalizationText msg="msg_refine_target"></AppLocalizationText></p>
+        <select
+          class="formInput formInput"
+          :value="coordinate.type"
+          @input="changeType"
+        >
+          <option value="style"><AppLocalizationText msg="msg_style"></AppLocalizationText></option>
+          <option value="augment"><AppLocalizationText msg="msg_attribute"></AppLocalizationText></option>
+          <option value="tag"><AppLocalizationText msg="msg_tag"></AppLocalizationText></option>
+        </select>
+      </label>
+      <label class="formItemSection">
+        <p
+          v-if="coordinate.type === 'style'"
+          key="styleTitle"
+          class="formHeader"
+        ><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></p>
+        <p
+          v-else-if="coordinate.type === 'augment'"
+          key="augmentTitle"
+          class="formHeader"
+        ><AppLocalizationText msg="msg_html_attribute_name"></AppLocalizationText></p>
+        <p
+          v-else-if="coordinate.type === 'tag'"
+          key="tagTitle"
+          class="formHeader"
+        ><AppLocalizationText msg="msg_html_tag_name"></AppLocalizationText></p>
+        <input
+          class="formInput formInput"
+          :value="coordinate.key"
+          type="text"
+          @change="changeKey"
+        >
+      </label>
+      <label
+        v-if="coordinate.type !== 'tag'"
+        class="formItemSection"
+      >
+        <p
+          v-if="coordinate.type === 'style'"
+          class="formHeader"
+        ><AppLocalizationText msg="msg_value"></AppLocalizationText></p>
+        <span v-else-if="coordinate.type === 'augment'"><AppLocalizationText msg="msg_attribute_name"></AppLocalizationText></span>
+        <input
+          class="formInput formInput"
+          :value="coordinate.values"
+          type="text"
+          @change="changeValue"
+        >
+      </label>
+    </div>
   </div>
 </template>
 
@@ -52,6 +70,7 @@
   import {createComponent, SetupContext} from "@vue/composition-api";
   import {Coordinate} from "@/settings/interface";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppButton from "@/options/components/AppButton.vue";
 
   type Prop = {
     coordinate: Coordinate,
@@ -60,7 +79,8 @@
 
   export default createComponent({
     components: {
-      AppLocalizationText
+      AppLocalizationText,
+      AppButton
     },
     props: {
       coordinate: {

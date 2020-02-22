@@ -1,27 +1,35 @@
 <template>
-  <div>
-    <label>
-      <span><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></span>
-      <input
-        :value="data.property"
-        type="text"
-        @change="changeStyleProperty"
-      >
-    </label>
-    <label>
-      <span><AppLocalizationText msg="msg_value"></AppLocalizationText></span>
-      <input
-        :value="data.values"
-        type="text"
-        @change="changeStyleValues"
-      >
-    </label>
-    <label>
+  <div class="formWrapper">
+    <div class="formDeleteButtonWrapper">
       <button
-        type="button"
+        class="formDeleteButton"
         @click="deleteStyle"
-      ><AppLocalizationText msg="msg_delete"></AppLocalizationText></button>
-    </label>
+      ><img
+        svg-inline
+        class="formDeleteButtonImage"
+        src="@/assets/cancel.svg"
+      ></button>
+    </div>
+    <div class="formFormArea">
+      <label class="formItemSection">
+        <p class="formHeader"><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></p>
+        <input
+          class="formInput formInput"
+          :value="data.property"
+          type="text"
+          @change="changeStyleProperty"
+        >
+      </label>
+      <label class="formItemSection">
+        <span class="formHeader"><AppLocalizationText msg="msg_value"></AppLocalizationText></span>
+        <input
+          class="formInput formInput"
+          :value="data.values"
+          type="text"
+          @change="changeStyleValues"
+        >
+      </label>
+    </div>
   </div>
 </template>
 
@@ -29,6 +37,7 @@
   import {createComponent, SetupContext} from "@vue/composition-api";
   import {Style} from "@/settings/interface";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppButton from "@/options/components/AppButton.vue";
 
   type Prop = {
     data: Style,
@@ -36,7 +45,10 @@
   };
 
   export default createComponent({
-    components: {AppLocalizationText},
+    components: {
+      AppLocalizationText,
+      AppButton
+    },
     props: {
       data: {
         type: Object,

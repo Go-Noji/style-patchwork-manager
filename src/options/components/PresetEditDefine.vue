@@ -1,12 +1,20 @@
 <template>
-  <section>
-    <h4><AppLocalizationText msg="msg_definition"></AppLocalizationText>{{index + 1}}</h4>
+  <section class="defineWrapper">
+    <div class="defineTitleWrapper">
+      <h4><AppLocalizationText msg="msg_definition"></AppLocalizationText>{{index + 1}}</h4>
+      <AppButton
+        keyColor="#212121"
+        baseColor="#FAFAFA"
+        @click-button="deleteDefine"
+      ><AppLocalizationText msg="msg_definition"></AppLocalizationText>{{index + 1}}&nbsp;<AppLocalizationText msg="msg_delete"></AppLocalizationText></AppButton>
+    </div>
     <section>
-      <h5><AppLocalizationText msg="msg_applicable_condition"></AppLocalizationText></h5>
-      <ul>
+      <h5 class="defineTitle"><AppLocalizationText msg="msg_applicable_condition"></AppLocalizationText></h5>
+      <ul class="defineBox">
         <li
           v-for="(coordinate, coordinateIndex) in define.coordinates"
           :key="'coordinate_'+coordinateIndex"
+          class="defineList"
         >
           <PresetEditDefineCoordinate
             :coordinate="coordinate"
@@ -15,17 +23,21 @@
           ></PresetEditDefineCoordinate>
         </li>
       </ul>
-      <button
-        type="button"
-        @click="createDefineCoordinate"
-      ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
-    </section>
+      <div class="defineButtonWrapper">
+        <AppButton
+          keyColor="#212121"
+          baseColor="#FAFAFA"
+          @click-button="createDefineCoordinate"
+        ><AppLocalizationText msg="msg_applicable_condition"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>
+      </div>
+      </section>
     <section>
-      <h5><AppLocalizationText msg="msg_applicable_style"></AppLocalizationText></h5>
-      <ul>
+      <h5 class="defineTitle"><AppLocalizationText msg="msg_applicable_style"></AppLocalizationText></h5>
+      <ul class="defineBox">
         <li
           v-for="(style, styleIndex) in define.styles"
           :key="'style_'+styleIndex"
+          class="defineList"
         >
           <PresetEditDefineStyle
             :data="style"
@@ -34,16 +46,14 @@
           ></PresetEditDefineStyle>
         </li>
       </ul>
-      <button
-        :key="'deleteDefineButton'+index"
-        type="button"
-        @click="createDefineStyle"
-      ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
+      <div class="defineButtonWrapper">
+        <AppButton
+          keyColor="#212121"
+          baseColor="#FAFAFA"
+          @click-button="createDefineStyle"
+        ><AppLocalizationText msg="msg_applicable_style"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>
+      </div>
     </section>
-    <button
-      type="button"
-      @click="deleteDefine"
-    ><AppLocalizationText msg="msg_delete"></AppLocalizationText></button>
   </section>
 </template>
 
@@ -53,6 +63,7 @@
   import PresetEditDefineCoordinate from "@/options/components/PresetEditDefineCoordinate.vue";
   import PresetEditDefineStyle from "@/options/components/PresetEditDefineStyle.vue";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppButton from "@/options/components/AppButton.vue";
 
   type Prop = {
     index: number,
@@ -63,7 +74,8 @@
     components: {
       PresetEditDefineCoordinate,
       PresetEditDefineStyle,
-      AppLocalizationText
+      AppLocalizationText,
+      AppButton
     },
     props: {
       index: {
@@ -148,5 +160,30 @@
 </script>
 
 <style scoped>
-
+  .defineWrapper{
+    padding-left: 20px;
+    border-left: #9E9E9E solid 5px;
+  }
+  .defineTitle{
+    font-size: 16px;
+    margin: 0;
+  }
+  .defineBox{
+    margin: 0;
+    padding: 0;
+  }
+  .defineList{
+    list-style-type: none;
+  }
+  .defineTitleWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+  }
+  .defineButtonWrapper{
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+  }
 </style>

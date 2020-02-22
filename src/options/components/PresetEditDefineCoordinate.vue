@@ -12,9 +12,18 @@
       </select>
     </label>
     <label>
-      <span v-if="coordinate.type === 'style'"><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></span>
-      <span v-else-if="coordinate.type === 'augment'"><AppLocalizationText msg="msg_html_attribute_name"></AppLocalizationText></span>
-      <span v-else-if="coordinate.type === 'tag'"><AppLocalizationText msg="msg_html_tag_name"></AppLocalizationText></span>
+      <span
+        v-if="coordinate.type === 'style'"
+        key="styleTitle"
+      ><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></span>
+      <span
+        v-else-if="coordinate.type === 'augment'"
+        key="augmentTitle"
+      ><AppLocalizationText msg="msg_html_attribute_name"></AppLocalizationText></span>
+      <span
+        v-else-if="coordinate.type === 'tag'"
+        key="tagTitle"
+      ><AppLocalizationText msg="msg_html_tag_name"></AppLocalizationText></span>
       <input
         :value="coordinate.key"
         type="text"

@@ -19,7 +19,7 @@
       <AppHeaderLink
         v-else
         to=""
-        :color="preset.color"
+        :color="getColorCode(preset.color)"
       >{{preset.title}}</AppHeaderLink>
     </nav>
     <nav class="headerSection">
@@ -41,6 +41,8 @@
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppHeaderLink from "@/options/components/AppHeaderLink.vue";
   import usePresets from "@/options/compositions/presetComposition";
+  import {isColorKeys} from "@/settings/interface";
+  import {COLORS} from "@/settings/settings";
 
   export default createComponent({
     components: {
@@ -57,13 +59,20 @@
       //プリセットデータ
       const preset = computed(() => state.presets[index] === undefined ? null : state.presets[index]);
 
+      /**
+       * COLORS のキー名から実際のカラーコードを取得する
+       */
+      const getColorCode = (value: string) => {
+        return isColorKeys(value) ? COLORS[value] : '#9E9E9E';
+      };
+
       //データを読み込む
       onMounted(() => {
         readPresets();
       });
 
       //データの伝播
-      return {preset};
+      return {preset, getColorCode};
     }
   });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <section
-    :style="'border-left: 5px solid '+color"
+    :style="'border-left: 5px solid '+colorCode"
     class="presetListItemWrapper"
   >
     <div class="presetListItemDeleteButtonWrapper">
@@ -42,8 +42,10 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext} from "@vue/composition-api";
+  import {computed, createComponent, SetupContext} from "@vue/composition-api";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import {COLORS} from "@/settings/settings";
+  import {isColorKeys} from "@/settings/interface";
 
   type Props = {
     index: number,
@@ -80,8 +82,15 @@
         setupContext.emit('delete-preset', props.index);
       };
 
+      /**
+       * COLORS のキー名から実際のカラーコードを取得する
+       */
+      const colorCode = computed(() => {
+        return isColorKeys(props.color) ? COLORS[props.color] : '#9E9E9E';
+      });
+
       //prop を伝播
-      return {deletePreset};
+      return {deletePreset, colorCode};
     }
   });
 </script>

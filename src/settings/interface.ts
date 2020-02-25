@@ -1,5 +1,10 @@
 //スタイルを当てる条件
-import {COLORS} from "@/settings/settings";
+import {COLOR_KEYS, COLORS} from "@/settings/settings";
+
+//COLORS のキーであるか判定する
+export const isColorKeys = (value: string): value is COLOR_KEYS => {
+  return Object.keys(COLORS).some(color => color === value);
+};
 
 //スタイルを当てる条件
 export interface Coordinate {

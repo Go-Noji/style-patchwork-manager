@@ -3,8 +3,10 @@ import {Coordinate, Define, Preset, Style} from "@/settings/interface";
 //拡張機能のバージョン
 export const VERSION = '0.1';
 
+export type COLOR_KEYS = 'red' | 'pink' | 'purple' | 'deepPurple' | 'indigo' | 'blue' | 'lightBlue' | 'cyan' | 'teal' | 'green' | 'lightGreen' | 'lime' | 'yellow' | 'amber' | 'orange' | 'deepOrange' | 'brown' | 'grey' | 'blueGray';
+
 //拡張機能で扱うカラーセット
-export const COLORS = {
+export const COLORS: {[key in COLOR_KEYS]?: string} = {
   red: '#f44336',
   pink: '#E91E63',
   purple: '#9C27B0',

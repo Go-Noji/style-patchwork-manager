@@ -103,9 +103,9 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext, onMounted, computed} from "@vue/composition-api";
+  import {createComponent, SetupContext, onMounted, computed, inject} from "@vue/composition-api";
   import {COLORS, DEFAULT_DEFINE, DEFAULT_DEFINE_COORDINATE, DEFAULT_DEFINE_STYLE} from "@/settings/settings";
-  import usePresets from "@/options/compositions/presetComposition";
+  import {USE_PRESET_KEY} from "@/options/compositions/presetComposition";
   import {Define} from "@/settings/interface";
   import PresetEditDefine from "@/options/components/PresetEditDefine.vue";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
@@ -120,10 +120,15 @@
       const index = Number(context.root.$route.params['index']);
 
       //プリセット用の composition function を用意
-      const {state, readPresets, updatePreset} = usePresets();
+      const store = inject(USE_PRESET_KEY);
+
+      //composition function の絞り込み
+      if (store === undefined) {
+        return;
+      }
 
       //プリセットデータ
-      const preset = computed(() => state.presets[index] === undefined ? null : state.presets[index]);
+      const preset = computed(() => store.state.presets[index]);
 
       /**
        * preset の define 以外を更新する
@@ -137,7 +142,7 @@
         }
 
         //プリセットデータの対象キーを変更したデータで更新
-        await updatePreset(index, {...state.presets[index], [key]: event.target.value});
+        await store.updatePreset(index, {...store.state.presets[index], [key]: event.target.value});
       };
 
       /**
@@ -145,11 +150,11 @@
        */
       const createDefine = async () => {
         //定義を追加した形のデータを用意
-        const data = {...state.presets[index]};
+        const data = {...store.state.presets[index]};
         data.defines.push(DEFAULT_DEFINE);
 
         //更新
-        await updatePreset(index, data);
+        await store.updatePreset(index, data);
       };
 
       /**
@@ -159,18 +164,13 @@
        */
       const changeDefine = async ({defineIndex, define}: {defineIndex: number, define: Define}) => {
         //対象プリセットの用意
-        const data = {...state.presets[index]};
-
-        //対象が無ければなにもしない
-        if (data.defines[defineIndex] === undefined) {
-          return;
-        }
+        const data = {...store.state.presets[index]};
 
         //定義を追加
         data.defines.splice(defineIndex, 1, define);
 
         //更新
-        await updatePreset(index, data);
+        await store.updatePreset(index, data);
       };
 
       /**
@@ -179,18 +179,13 @@
        */
       const deleteDefine = async (defineIndex: number) => {
         //対象プリセットの用意
-        const data = {...state.presets[index]};
-
-        //対象が無ければなにもしない
-        if (data.defines[defineIndex] === undefined) {
-          return;
-        }
+        const data = {...store.state.presets[index]};
 
         //定義を削除
         data.defines.splice(defineIndex, 1);
 
         //更新
-        await updatePreset(index, data);
+        await store.updatePreset(index, data);
       };
 
       /**
@@ -199,18 +194,13 @@
        */
       const createDefineCoordinate = async (defineIndex: number) => {
         //対象プリセットの用意
-        const data = {...state.presets[index]};
-
-        //対象が無ければなにもしない
-        if (data.defines[defineIndex] === undefined) {
-          return;
-        }
+        const data = {...store.state.presets[index]};
 
         //適用条件を追加
         data.defines[defineIndex].coordinates.push(DEFAULT_DEFINE_COORDINATE);
 
         //更新
-        await updatePreset(index, data);
+        await store.updatePreset(index, data);
       };
 
       /**
@@ -219,28 +209,23 @@
        */
       const createDefineStyle = async (defineIndex: number) => {
         //対象プリセットの用意
-        const data = {...state.presets[index]};
-
-        //対象が無ければなにもしない
-        if (data.defines[defineIndex] === undefined) {
-          return;
-        }
+        const data = {...store.state.presets[index]};
 
         //適用条件を追加
         data.defines[defineIndex].styles.push(DEFAULT_DEFINE_STYLE);
 
         //更新
-        await updatePreset(index, data);
+        await store.updatePreset(index, data);
       };
 
       //データを読み込む
       onMounted(() => {
-        readPresets();
+        store.readPresets();
       });
 
       //テンプレートへ伝播
       return {
-        error: state.error,
+        error: store.state.error,
         colors: COLORS,
         preset,
         updatePresetData,

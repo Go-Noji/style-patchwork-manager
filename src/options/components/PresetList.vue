@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, onMounted, SetupContext} from "@vue/composition-api";
-  import usePresets from "@/options/compositions/presetComposition"
+  import {createComponent, inject, onMounted, SetupContext} from "@vue/composition-api";
+  import {USE_PRESET_KEY} from "@/options/compositions/presetComposition"
   import PresetListItem from "@/options/components/PresetListItem.vue";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppButton from "@/options/components/AppButton.vue";
@@ -45,40 +45,40 @@
       AppButton
     },
     setup(_, context: SetupContext) {
+
       //プリセット用の composition function を用意
-      const {state, init, readPresets, createPreset, deletePreset} = usePresets();
+      const store = inject(USE_PRESET_KEY);
+
+      //composition function の絞り込み
+      if (store === undefined) {
+        return;
+      }
 
       /**
        * プリセットを追加し、編集画面へ移動する
        */
       const _create = () => {
-        createPreset()
-          .then(index => {
-            context.root.$router.push('/edit/'+String(index));
-          });
+        store.createPreset();
       };
 
       /**
        * 対象のプリセットを削除する
        */
       const _delete = (index: number) => {
-        deletePreset(index)
-          .then(() => {
-            return readPresets();
-          });
+        store.deletePreset(index);
       };
 
       //プリセットを読み込む
       onMounted(() => {
         //プリセットの初期化
-        init()
+        store.init()
           .then(() => {
-            return readPresets();
+            return store.readPresets();
           });
       });
 
       //テンプレートに伝播
-      return {state, _create, _delete};
+      return {state: store.state, _create, _delete};
     }
   })
 </script>

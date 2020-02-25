@@ -1,11 +1,11 @@
-import {reactive} from "@vue/composition-api";
+import {InjectionKey, reactive} from "@vue/composition-api";
 import {Preset} from "@/settings/interface";
 import {DEFAULT_PRESET, DEFAULT_STORAGE_AREA} from "@/settings/settings";
 
 /**
  * Preset を Chrome から取得する
  */
-export default () => {
+const usePreset = () => {
   //プリセット、初期化フラグ、ローディングフラグ、エラー文字列
   const state = reactive<{presets: Preset[], init: boolean, storageArea: 'sync' | 'local', loading: boolean, error: string}>({
     presets: [],
@@ -191,3 +191,9 @@ export default () => {
   //返す
   return {state, init, readPresets, createPreset, updatePreset, deletePreset};
 };
+
+//composition のエクスポート
+export default usePreset;
+
+//composition を注入するためのキー
+export const USE_PRESET_KEY: InjectionKey<ReturnType<typeof usePreset>> = Symbol('usePreset');

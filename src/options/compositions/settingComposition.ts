@@ -1,4 +1,4 @@
-import {reactive} from "@vue/composition-api";
+import {InjectionKey, reactive} from "@vue/composition-api";
 import {DEFAULT_STORAGE_AREA, VERSION} from "@/settings/settings";
 import {isPreset, Preset} from "@/settings/interface";
 
@@ -64,7 +64,7 @@ const isPresets = (value: any): value is Preset[] => {
 /**
  * Preset を Chrome から取得する
  */
-export default () => {
+const useSetting = () => {
   //バージョン、保存先、On / Off 設定、エラーメッセージ
   const state = reactive<{
     version: string,
@@ -276,3 +276,9 @@ export default () => {
   //返す
   return {state, getSettings, changeStorage, changeEnable, exportFileString, importFileString};
 };
+
+//composition のエクスポート
+export default useSetting;
+
+//composition を注入するためのキー
+export const USE_SETTING: InjectionKey<ReturnType<typeof useSetting>> = Symbol('useSetting');

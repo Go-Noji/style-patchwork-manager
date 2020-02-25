@@ -37,10 +37,10 @@
 </template>
 
 <script lang="ts">
-  import {computed, createComponent, onMounted, SetupContext} from "@vue/composition-api";
+  import {computed, createComponent, inject, onMounted, SetupContext} from "@vue/composition-api";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppHeaderLink from "@/options/components/AppHeaderLink.vue";
-  import usePresets from "@/options/compositions/presetComposition";
+  import {USE_PRESET_KEY} from "@/options/compositions/presetComposition";
   import {isColorKeys} from "@/settings/interface";
   import {COLORS} from "@/settings/settings";
 
@@ -54,10 +54,15 @@
       const index = Number(context.root.$route.params['index']);
 
       //プリセット用の composition function を用意
-      const {state, readPresets} = usePresets();
+      const store = inject(USE_PRESET_KEY);
+
+      //composition function の絞り込み
+      if (store === undefined) {
+        return;
+      }
 
       //プリセットデータ
-      const preset = computed(() => state.presets[index] === undefined ? null : state.presets[index]);
+      const preset = computed(() => store.state.presets[index]);
 
       /**
        * COLORS のキー名から実際のカラーコードを取得する
@@ -68,7 +73,7 @@
 
       //データを読み込む
       onMounted(() => {
-        readPresets();
+        store.readPresets();
       });
 
       //データの伝播

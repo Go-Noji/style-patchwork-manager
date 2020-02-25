@@ -98,16 +98,21 @@
 </template>
 
 <script lang="ts">
-  import {ref, createComponent, onMounted, computed} from "@vue/composition-api";
-  import useSetting from "@/options/compositions/settingComposition"
+  import {ref, createComponent, onMounted, computed, inject} from "@vue/composition-api";
+  import {USE_SETTING} from "@/options/compositions/settingComposition"
   import {STORAGE_LIMIT_SYNC, STORAGE_LIMIT_LOCAL} from "@/settings/settings";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
 
   export default createComponent({
     components: {AppLocalizationText},
     setup() {
-      //設定用の composition function を用意
-      const {state, getSettings, changeStorage, changeEnable, exportFileString, importFileString} = useSetting();
+      //プリセット用の composition function を用意
+      const store = inject(USE_SETTING);
+
+      //composition function の絞り込み
+      if (store === undefined) {
+        return;
+      }
 
       //読み込み完了フラグ
       const isLoaded = ref(false);
@@ -128,7 +133,7 @@
         }
 
         //更新を行う
-        await changeStorage(event.target.value);
+        await store.changeStorage(event.target.value);
       };
 
       /**
@@ -142,17 +147,17 @@
         }
 
         //更新を行う
-        await changeEnable(event.target.checked);
+        await store.changeEnable(event.target.checked);
       };
 
       /**
        * 現在の残り使用可能バイト数を返す
        */
       const remainingAvailableBytes = computed((): number => {
-        if (state.storage === "sync") {
-          return STORAGE_LIMIT_SYNC < state.bytes ? 0 : STORAGE_LIMIT_SYNC - state.bytes;
+        if (store.state.storage === "sync") {
+          return STORAGE_LIMIT_SYNC < store.state.bytes ? 0 : STORAGE_LIMIT_SYNC - store.state.bytes;
         } else {
-          return STORAGE_LIMIT_LOCAL < state.bytes ? 0 : STORAGE_LIMIT_LOCAL - state.bytes;
+          return STORAGE_LIMIT_LOCAL < store.state.bytes ? 0 : STORAGE_LIMIT_LOCAL - store.state.bytes;
         }
       });
 
@@ -161,7 +166,7 @@
        */
       const exportSettingJson = async () => {
         //JSON ファイルにする文字列を入手
-        const json = await exportFileString();
+        const json = await store.exportFileString();
 
         //文字列が空(=失敗)ならなにもしない
         if (json === '') {
@@ -197,13 +202,13 @@
           }
 
           //インポートを試みる
-          importFileString(reader.result);
+          store.importFileString(reader.result);
         });
       };
 
       //状態を読み込む
       onMounted(() => {
-        getSettings()
+        store.getSettings()
         .then(() => {
           //読み込みが正常に完了
           isLoaded.value = true;
@@ -211,7 +216,7 @@
       });
 
       //テンプレートに伝播
-      return {state, isLoaded, remainingAvailableBytes, changeStorageData, changeEnableData, exportSettingJson, importSettingJson};
+      return {state: store.state, isLoaded, remainingAvailableBytes, changeStorageData, changeEnableData, exportSettingJson, importSettingJson};
     }
   })
 </script>

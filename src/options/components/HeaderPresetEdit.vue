@@ -62,7 +62,7 @@
       }
 
       //プリセットデータ
-      const preset = computed(() => store.state.presets[index]);
+      const preset = computed(() => store.state.presets[index] === undefined ? null : store.state.presets[index]);
 
       /**
        * COLORS のキー名から実際のカラーコードを取得する

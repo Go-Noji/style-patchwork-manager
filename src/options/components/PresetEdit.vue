@@ -128,7 +128,7 @@
       }
 
       //プリセットデータ
-      const preset = computed(() => store.state.presets[index]);
+      const preset = computed(() => store.state.presets[index] === undefined ? null : store.state.presets[index]);
 
       /**
        * preset の define 以外を更新する

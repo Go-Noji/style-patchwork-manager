@@ -1,12 +1,15 @@
 <template>
   <section
     :style="'border-left: 5px solid '+colorCode"
+    :class="{hoverShadow: isHover}"
     class="presetListItemWrapper"
   >
     <div class="presetListItemDeleteButtonWrapper">
       <button
         class="presetListItemDeleteButton"
         @click="deletePreset"
+        @mouseenter="hoverEnter"
+        @mouseleave="hoverLeave"
       ><img
         svg-inline
         class="presetListItemDeleteButtonImage"
@@ -42,7 +45,7 @@
 </template>
 
 <script lang="ts">
-  import {computed, createComponent, SetupContext} from "@vue/composition-api";
+  import {computed, createComponent, ref, SetupContext} from "@vue/composition-api";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import {COLORS} from "@/settings/settings";
   import {isColorKeys} from "@/settings/interface";
@@ -75,6 +78,23 @@
       },
     },
     setup(props: Props, setupContext: SetupContext) {
+      //削除ボタンにホバーしているかどうか
+      const isHover = ref(false);
+
+      /**
+       * ホバーを検知
+       */
+      const hoverEnter = () => {
+        isHover.value = true;
+      };
+
+      /**
+       * ホバーアウトを検知
+       */
+      const hoverLeave = () => {
+        isHover.value = false;
+      };
+
       /**
        * 削除イベントを親に emit する
        */
@@ -90,7 +110,7 @@
       });
 
       //prop を伝播
-      return {deletePreset, colorCode};
+      return {isHover, hoverEnter, hoverLeave, deletePreset, colorCode};
     }
   });
 </script>

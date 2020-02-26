@@ -1,9 +1,14 @@
 <template>
-  <div class="formWrapper">
+  <div
+    :class="{hoverShadow: isHover}"
+    class="formWrapper"
+  >
     <div class="formDeleteButtonWrapper">
       <button
         class="formDeleteButton"
         @click="deleteStyle"
+        @mouseenter="hoverEnter"
+        @mouseleave="hoverLeave"
       ><img
         svg-inline
         class="formDeleteButtonImage"
@@ -34,7 +39,7 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext} from "@vue/composition-api";
+  import {createComponent, ref, SetupContext} from "@vue/composition-api";
   import {Style} from "@/settings/interface";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppButton from "@/options/components/AppButton.vue";
@@ -59,6 +64,23 @@
       }
     },
     setup(prop: Prop, context: SetupContext) {
+      //削除ボタンにホバーしているかどうか
+      const isHover = ref(false);
+
+      /**
+       * ホバーを検知
+       */
+      const hoverEnter = () => {
+        isHover.value = true;
+      };
+
+      /**
+       * ホバーアウトを検知
+       */
+      const hoverLeave = () => {
+        isHover.value = false;
+      };
+
       /**
        * プロパティの変更を親へ伝播する
        * @param e
@@ -98,7 +120,7 @@
       };
 
       //テンプレートへ伝播
-      return {changeStyleProperty, changeStyleValues, deleteStyle};
+      return {isHover, hoverEnter, hoverLeave, changeStyleProperty, changeStyleValues, deleteStyle};
     }
   })
 </script>

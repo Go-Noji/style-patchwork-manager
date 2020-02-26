@@ -1,9 +1,14 @@
 <template>
-  <div class="formWrapper">
+  <div
+    :class="{hoverShadow: isHover}"
+    class="formWrapper"
+  >
     <div class="formDeleteButtonWrapper">
       <button
         class="formDeleteButton"
         @click="deleteCoordinate"
+        @mouseenter="hoverEnter"
+        @mouseleave="hoverLeave"
       ><img
         svg-inline
         class="formDeleteButtonImage"
@@ -67,7 +72,7 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext} from "@vue/composition-api";
+  import {createComponent, ref, SetupContext} from "@vue/composition-api";
   import {Coordinate} from "@/settings/interface";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppButton from "@/options/components/AppButton.vue";
@@ -93,6 +98,23 @@
       }
     },
     setup(prop: Prop, context: SetupContext) {
+      //削除ボタンにホバーしているかどうか
+      const isHover = ref(false);
+
+      /**
+       * ホバーを検知
+       */
+      const hoverEnter = () => {
+        isHover.value = true;
+      };
+
+      /**
+       * ホバーアウトを検知
+       */
+      const hoverLeave = () => {
+        isHover.value = false;
+      };
+
       /**
        * key で指定した値を value に変更した Coordinate データを返す
        * @param key
@@ -148,7 +170,7 @@
       };
 
       //テンプレートへ伝播
-      return {changeType, changeKey, changeValue, deleteCoordinate};
+      return {isHover, hoverEnter, hoverLeave, changeType, changeKey, changeValue, deleteCoordinate};
     }
   })
 </script>

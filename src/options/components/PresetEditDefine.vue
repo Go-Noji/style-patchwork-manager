@@ -1,10 +1,15 @@
 <template>
-  <section class="defineWrapper">
+  <section
+    :class="{hoverShadow: isHover}"
+    class="defineWrapper"
+  >
     <div class="defineTitleWrapper">
       <div class="formDeleteButtonWrapper">
         <button
           class="formDeleteButton"
           @click="deleteDefine"
+          @mouseenter="hoverEnter"
+          @mouseleave="hoverLeave"
         ><img
           svg-inline
           class="formDeleteButtonImage"
@@ -63,7 +68,7 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext} from "@vue/composition-api";
+  import {createComponent, ref, SetupContext} from "@vue/composition-api";
   import {Coordinate, Define, Style} from "@/settings/interface";
   import PresetEditDefineCoordinate from "@/options/components/PresetEditDefineCoordinate.vue";
   import PresetEditDefineStyle from "@/options/components/PresetEditDefineStyle.vue";
@@ -93,6 +98,23 @@
       }
     },
     setup(prop: Prop, context: SetupContext) {
+      //削除ボタンにホバーしているかどうか
+      const isHover = ref(false);
+
+      /**
+       * ホバーを検知
+       */
+      const hoverEnter = () => {
+        isHover.value = true;
+      };
+
+      /**
+       * ホバーアウトを検知
+       */
+      const hoverLeave = () => {
+        isHover.value = false;
+      };
+
       /**
        * Coordinates の変更を親へ伝播する
        * @param data
@@ -159,7 +181,7 @@
       };
 
       //テンプレートへ伝播
-      return {changeCoordinate, changeStyle, deleteDefine, createDefineCoordinate, createDefineStyle};
+      return {isHover, hoverEnter, hoverLeave, changeCoordinate, changeStyle, deleteDefine, createDefineCoordinate, createDefineStyle};
     }
   })
 </script>

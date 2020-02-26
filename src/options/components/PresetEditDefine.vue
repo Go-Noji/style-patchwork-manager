@@ -1,12 +1,17 @@
 <template>
   <section class="defineWrapper">
     <div class="defineTitleWrapper">
+      <div class="formDeleteButtonWrapper">
+        <button
+          class="formDeleteButton"
+          @click="deleteDefine"
+        ><img
+          svg-inline
+          class="formDeleteButtonImage"
+          src="@/assets/cancel.svg"
+        ></button>
+      </div>
       <h4><AppLocalizationText msg="msg_definition"></AppLocalizationText>{{index + 1}}</h4>
-      <AppButton
-        keyColor="#212121"
-        baseColor="#FAFAFA"
-        @click-button="deleteDefine"
-      ><AppLocalizationText msg="msg_definition"></AppLocalizationText>{{index + 1}}&nbsp;<AppLocalizationText msg="msg_delete"></AppLocalizationText></AppButton>
     </div>
     <section>
       <h5 class="defineTitle"><AppLocalizationText msg="msg_applicable_condition"></AppLocalizationText></h5>
@@ -177,7 +182,6 @@
   }
   .defineTitleWrapper{
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin: 20px 0;
   }

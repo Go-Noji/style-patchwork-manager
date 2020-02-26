@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, ref, onMounted} from "@vue/composition-api";
+  import {createComponent, ref, onMounted, watch} from "@vue/composition-api";
 
   type Props = {
     to: string,
@@ -42,12 +42,22 @@
       //現在表示中のリンクか判定
       const current = ref(false);
 
-      //表示中のリンクかの判定は 0.1 秒待ってから行う
-      onMounted(() => {
+      //下線をアニメーションさせる
+      const animation = () => {
+        //一旦カレント指定を解除
+        current.value = false;
+
+        //カレントか判定
         setTimeout(() => {
           current.value = props.to === ''
         }, 100);
-      });
+      };
+
+      //表示中のリンクかの判定は 0.1 秒待ってから行う
+      onMounted(animation);
+
+      //props.color の変更を検知しアニメーションを実行する
+      watch(() => props.color, animation);
 
       //伝播
       return {current};

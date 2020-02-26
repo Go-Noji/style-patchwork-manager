@@ -78,10 +78,13 @@
             ></PresetEditDefine>
           </li>
         </ul>
-        <button
-          type="button"
-          @click="createDefine"
-        ><AppLocalizationText msg="msg_add"></AppLocalizationText></button>
+        <div class="editButtonWrapper">
+          <AppButton
+            keyColor="#212121"
+            baseColor="#FAFAFA"
+            @click-button="createDefine"
+          ><AppLocalizationText msg="msg_definition"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>
+        </div>
       </section>
       <section class="formSection">
         <label>
@@ -109,11 +112,13 @@
   import {Define} from "@/settings/interface";
   import PresetEditDefine from "@/options/components/PresetEditDefine.vue";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppButton from "@/options/components/AppButton.vue";
 
   export default createComponent({
     components: {
       PresetEditDefine,
-      AppLocalizationText
+      AppLocalizationText,
+      AppButton
     },
     setup(_, context: SetupContext) {
       //プリセットの対象インデックス
@@ -288,5 +293,9 @@
   }
   .editList{
     list-style-type: none;
+  }
+  .editButtonWrapper{
+    display: flex;
+    justify-content: flex-end;
   }
 </style>

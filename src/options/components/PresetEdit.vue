@@ -102,23 +102,39 @@
     >
       <p><AppLocalizationText msg="msg_loading"></AppLocalizationText></p>
     </div>
+    <AppModal
+      v-show="deleteModalFlag"
+      @click-outer="deleteModalFlag = false"
+    >
+      <AppModalDeleteWindow
+        @click-delete="deleteDefine"
+        @click-back="deleteModalFlag = false"
+      >
+        <p><AppLocalizationText msg="msg_delete_attention"></AppLocalizationText></p>
+      </AppModalDeleteWindow>
+    </AppModal>
   </article>
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext, onMounted, computed, inject} from "@vue/composition-api";
+  import {createComponent, SetupContext, onMounted, computed, inject, ref} from "@vue/composition-api";
   import {COLORS, DEFAULT_DEFINE, DEFAULT_DEFINE_COORDINATE, DEFAULT_DEFINE_STYLE} from "@/settings/settings";
   import {USE_PRESET_KEY} from "@/options/compositions/presetComposition";
   import {Define} from "@/settings/interface";
   import PresetEditDefine from "@/options/components/PresetEditDefine.vue";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppButton from "@/options/components/AppButton.vue";
+  import AppModal from "@/options/components/AppModal.vue";
+  import AppModalDeleteWindow from "@/options/components/AppModalDeleteWindow.vue";
+  import {USE_SETTING} from "@/options/compositions/settingComposition";
 
   export default createComponent({
     components: {
       PresetEditDefine,
       AppLocalizationText,
-      AppButton
+      AppButton,
+      AppModal,
+      AppModalDeleteWindow
     },
     setup(_, context: SetupContext) {
       //プリセットの対象インデックス
@@ -131,6 +147,20 @@
       if (store === undefined) {
         return;
       }
+
+      //設定用の composition function を用意
+      const setting = inject(USE_SETTING);
+
+      //composition function の絞り込み
+      if (setting === undefined) {
+        return;
+      }
+
+      //削除モーダルの表示フラグ
+      const deleteModalFlag = ref(false);
+
+      //削除モーダルの実行ボタンを押した際に削除されるインデックス
+      let deleteIndex = -1;
 
       //プリセットデータ
       const preset = computed(() => store.state.presets[index] === undefined ? null : store.state.presets[index]);
@@ -182,7 +212,17 @@
        * Define を削除する
        * @param defineIndex
        */
-      const deleteDefine = async (defineIndex: number) => {
+      const deleteDefine = async (defineIndex: number = -1) => {
+        //defineIndex が -1 (=引数が省略されている) 場合はモーダルのボタンによる実行と判定し、deleteIndex を設定する
+        defineIndex = defineIndex === -1 ? deleteIndex : defineIndex;
+
+        //モーダルが表示されておらず、かつ確認フラグが true ならモーダルを表示 & インデックスを保持
+        if ( ! deleteModalFlag.value && setting.state.deleteConfirm) {
+          deleteIndex = defineIndex;
+          deleteModalFlag.value = true;
+          return;
+        }
+
         //対象プリセットの用意
         const data = {...store.state.presets[index]};
 
@@ -191,6 +231,9 @@
 
         //更新
         await store.updatePreset(index, data);
+
+        //モーダルが表示されていれば消す
+        deleteModalFlag.value = false;
       };
 
       /**
@@ -233,6 +276,7 @@
         error: store.state.error,
         colors: COLORS,
         preset,
+        deleteModalFlag,
         updatePresetData,
         changeDefine,
         createDefine,

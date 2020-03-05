@@ -45,6 +45,17 @@
             </label>
           </div>
         </li>
+        <li>
+          <p><AppLocalizationText msg="msg_delete_confirm_setting"></AppLocalizationText></p>
+          <div>
+            <AppToggleSwitch
+              :enable=" ! state.deleteConfirm"
+              :onText="'Yes'"
+              :offText="'No'"
+              @click-switch="changeDeleteConfirm"
+            ></AppToggleSwitch>
+          </div>
+        </li>
       </ul>
       <div
         v-else
@@ -102,15 +113,16 @@
   import {USE_SETTING} from "@/options/compositions/settingComposition"
   import {STORAGE_LIMIT_SYNC, STORAGE_LIMIT_LOCAL} from "@/settings/settings";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppToggleSwitch from "@/options/components/AppToggleSwitch.vue";
 
   export default createComponent({
-    components: {AppLocalizationText},
+    components: {AppLocalizationText, AppToggleSwitch},
     setup() {
       //プリセット用の composition function を用意
-      const store = inject(USE_SETTING);
+      const settting = inject(USE_SETTING);
 
       //composition function の絞り込み
-      if (store === undefined) {
+      if (settting === undefined) {
         return;
       }
 
@@ -133,7 +145,7 @@
         }
 
         //更新を行う
-        await store.changeStorage(event.target.value);
+        await settting.changeStorage(event.target.value);
       };
 
       /**
@@ -147,17 +159,24 @@
         }
 
         //更新を行う
-        await store.changeEnable(event.target.checked);
+        await settting.changeEnable(event.target.checked);
+      };
+
+      /**
+       * deleteConfirm を変更する
+       */
+      const changeDeleteConfirm = async () => {
+        await settting.changeDeleteConfirm( ! settting.state.deleteConfirm);
       };
 
       /**
        * 現在の残り使用可能バイト数を返す
        */
       const remainingAvailableBytes = computed((): number => {
-        if (store.state.storage === "sync") {
-          return STORAGE_LIMIT_SYNC < store.state.bytes ? 0 : STORAGE_LIMIT_SYNC - store.state.bytes;
+        if (settting.state.storage === "sync") {
+          return STORAGE_LIMIT_SYNC < settting.state.bytes ? 0 : STORAGE_LIMIT_SYNC - settting.state.bytes;
         } else {
-          return STORAGE_LIMIT_LOCAL < store.state.bytes ? 0 : STORAGE_LIMIT_LOCAL - store.state.bytes;
+          return STORAGE_LIMIT_LOCAL < settting.state.bytes ? 0 : STORAGE_LIMIT_LOCAL - settting.state.bytes;
         }
       });
 
@@ -166,7 +185,7 @@
        */
       const exportSettingJson = async () => {
         //JSON ファイルにする文字列を入手
-        const json = await store.exportFileString();
+        const json = await settting.exportFileString();
 
         //文字列が空(=失敗)ならなにもしない
         if (json === '') {
@@ -202,13 +221,13 @@
           }
 
           //インポートを試みる
-          store.importFileString(reader.result);
+          settting.importFileString(reader.result);
         });
       };
 
       //状態を読み込む
       onMounted(() => {
-        store.getSettings()
+        settting.getSettings()
         .then(() => {
           //読み込みが正常に完了
           isLoaded.value = true;
@@ -216,7 +235,7 @@
       });
 
       //テンプレートに伝播
-      return {state: store.state, isLoaded, remainingAvailableBytes, changeStorageData, changeEnableData, exportSettingJson, importSettingJson};
+      return {state: settting.state, isLoaded, remainingAvailableBytes, changeDeleteConfirm, changeStorageData, changeEnableData, exportSettingJson, importSettingJson};
     }
   })
 </script>

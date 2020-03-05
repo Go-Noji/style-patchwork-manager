@@ -1,6 +1,5 @@
 <template>
   <div
-    v-show="showFlag"
     :style="'height:'+windowHeight+'px;'"
     class="modalWrapper"
   >
@@ -14,21 +13,11 @@
 </template>
 
 <script lang="ts">
-  import {createComponent, SetupContext} from "@vue/composition-api";
-
-  type Props = {
-    showFlag: boolean
-  };
+  import {computed, createComponent, SetupContext} from "@vue/composition-api";
 
   export default createComponent({
-    props: {
-      showFlag: {
-        type: Boolean,
-        required: true
-      }
-    },
-    setup(props: Props, context: SetupContext) {
-      const windowHeight = window.innerHeight;
+    setup(_, context: SetupContext) {
+      const windowHeight = computed(() => window.innerHeight);
 
       /**
        * モーダル以外の部分がクリックされたことを親コンポーネントへ通知する

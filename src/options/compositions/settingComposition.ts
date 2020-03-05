@@ -16,7 +16,8 @@ const isStorage = (value: any): value is Storage => {
 //chrome.storage.sync.get で得られるデータの型
 interface Setting {
   storage: Storage,
-  enable: boolean
+  enable: boolean,
+  deleteConfirm: boolean
 }
 
 /**
@@ -31,6 +32,9 @@ const isSetting = (value: any): value is Setting => {
     return false;
   }
   else if (typeof value.enable !== 'boolean') {
+    return false;
+  }
+  else if (typeof value.deleteConfirm !== 'boolean') {
     return false;
   }
 
@@ -71,12 +75,14 @@ const useSetting = () => {
     storage: Storage,
     bytes: number,
     enable: boolean,
+    deleteConfirm: boolean,
     error: string
   }>({
     version: VERSION,
     storage: DEFAULT_STORAGE_AREA,
     bytes: 0,
     enable: true,
+    deleteConfirm: true,
     error: ''
   });
 
@@ -100,7 +106,8 @@ const useSetting = () => {
       const setting = await (() => new Promise<Setting>((resolve, reject) => {
         chrome.storage.sync.get({
           storage: DEFAULT_STORAGE_AREA,
-          enable: true
+          enable: true,
+          deleteConfirm: true
         }, (items) => {
           //取得した情報の型を検査
           if ( ! isSetting(items)) {
@@ -119,6 +126,7 @@ const useSetting = () => {
       //設定値を書き換える
       state.storage = setting.storage;
       state.enable = setting.enable;
+      state.deleteConfirm = setting.deleteConfirm;
     }
     catch (e) {
       state.error = 'msg_error_update_failed';
@@ -190,6 +198,27 @@ const useSetting = () => {
   };
 
   /**
+   * deleteConfirm を変更する
+   * @param deleteConfirm
+   */
+  const changeDeleteConfirm = async (deleteConfirm: boolean) => {
+    try {
+      //更新を試みる
+      await (() =>  new Promise(resolve => {
+        chrome.storage.sync.set({deleteConfirm}, () => {
+          resolve();
+        });
+      }))();
+
+      //設定を書き換える
+      state.deleteConfirm = deleteConfirm;
+    }
+    catch (e) {
+      state.error = 'msg_error_update_failed';
+    }
+  };
+
+  /**
    * エクスポート用の json 文字列を作成する
    */
   const exportFileString = async (): Promise<string> => {
@@ -209,7 +238,7 @@ const useSetting = () => {
           }
 
           //返す
-          resolve(JSON.stringify({presets: items.presets, enable: state.enable, storage: state.storage, version: state.version}));
+          resolve(JSON.stringify({presets: items.presets, enable: state.enable, deleteConfirm: state.deleteConfirm, storage: state.storage, version: state.version}));
         });
       }))();
 
@@ -252,12 +281,18 @@ const useSetting = () => {
         return;
       }
 
+      //deleteConfirm 設定が存在しなかった場合はエラー
+      if (data.deleteConfirm === undefined || typeof data.deleteConfirm !== 'boolean') {
+        state.error = 'msg_error_invalid_file';
+        return;
+      }
+
       //バージョンがかわっていたらここで何か処理をする
 
       //設定の更新を試みる
       await (() => new Promise<string>(resolve => {
         //設定の変更を試みる
-        chrome.storage.sync.set({storage: data.storage, enable: data.enable}, () => {
+        chrome.storage.sync.set({storage: data.storage, enable: data.enable, deleteConfirm: data.deleteConfirm}, () => {
           //変更先
           const storage: Storage = data.storage;
 
@@ -274,7 +309,7 @@ const useSetting = () => {
   };
 
   //返す
-  return {state, getSettings, changeStorage, changeEnable, exportFileString, importFileString};
+  return {state, getSettings, changeStorage, changeEnable, changeDeleteConfirm, exportFileString, importFileString};
 };
 
 //composition のエクスポート

@@ -18,15 +18,11 @@
     <div class="formFormArea">
       <label class="formItemSection">
         <p class="formHeader"><AppLocalizationText msg="msg_refine_target"></AppLocalizationText></p>
-        <select
-          class="formInput formInput"
-          :value="coordinate.type"
-          @input="changeType"
-        >
-          <option value="style"><AppLocalizationText msg="msg_style"></AppLocalizationText></option>
-          <option value="augment"><AppLocalizationText msg="msg_attribute"></AppLocalizationText></option>
-          <option value="tag"><AppLocalizationText msg="msg_tag"></AppLocalizationText></option>
-        </select>
+        <AppTab
+          :tabs="tabs"
+          :current="coordinate.type"
+          @click-tab="changeType"
+        ></AppTab>
       </label>
       <label class="formItemSection">
         <p
@@ -76,6 +72,7 @@
   import {Coordinate} from "@/settings/interface";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppButton from "@/options/components/AppButton.vue";
+  import AppTab from "@/options/components/AppTab.vue";
 
   type Prop = {
     coordinate: Coordinate,
@@ -85,7 +82,8 @@
   export default createComponent({
     components: {
       AppLocalizationText,
-      AppButton
+      AppButton,
+      AppTab
     },
     props: {
       coordinate: {
@@ -98,6 +96,13 @@
       }
     },
     setup(prop: Prop, context: SetupContext) {
+      //選択肢
+      const tabs = {
+        style: chrome.i18n.getMessage('msg_style'),
+        augment: chrome.i18n.getMessage('msg_attribute'),
+        tag: chrome.i18n.getMessage('msg_tag')
+      };
+
       //削除ボタンにホバーしているかどうか
       const isHover = ref(false);
 
@@ -129,9 +134,9 @@
        * type の変更を親に伝播
        * @param e
        */
-      const changeType = (e: Event) => {
+      const changeType = (type: string) => {
         context.emit('change-coordinate', {
-          coordinate: _createUpdateCoordinate('type', e.target instanceof HTMLSelectElement ? e.target.value : ''),
+          coordinate: _createUpdateCoordinate('type', type),
           index: prop.index
         });
       };
@@ -170,7 +175,7 @@
       };
 
       //テンプレートへ伝播
-      return {isHover, hoverEnter, hoverLeave, changeType, changeKey, changeValue, deleteCoordinate};
+      return {tabs, isHover, hoverEnter, hoverLeave, changeType, changeKey, changeValue, deleteCoordinate};
     }
   })
 </script>

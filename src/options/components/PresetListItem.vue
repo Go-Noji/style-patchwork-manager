@@ -151,5 +151,6 @@
   }
   .presetListItemDeleteButtonImage{
     width: 20px;
+    color: #fafafa;
   }
 </style>

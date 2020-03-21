@@ -17,7 +17,7 @@
         <li class="presetList presetListCreate">
           <div class="presetListButtonWrapper">
             <AppButton
-              keyColor="#212121"
+              keyColor="#000"
               baseColor="#FAFAFA"
               @click-button="_create"
             ><AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>

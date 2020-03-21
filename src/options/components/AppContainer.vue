@@ -1,5 +1,8 @@
 <template>
-  <div class="wrapper">
+  <div
+    class="wrapper"
+  >
+    <TheBackground></TheBackground>
     <div class="container">
       <TheHeader></TheHeader>
     </div>
@@ -13,13 +16,15 @@
   import {createComponent, provide} from "@vue/composition-api";
   import PresetList from "@/options/components/PresetList.vue";
   import TheHeader from "@/options/components/TheHeader.vue";
+  import TheBackground from "@/options/components/TheBackground.vue";
   import presetComposition, {USE_PRESET_KEY} from "@/options/compositions/presetComposition";
   import settingComposition, {USE_SETTING} from "@/options/compositions/settingComposition";
 
   export default createComponent({
     components: {
       PresetList,
-      TheHeader
+      TheHeader,
+      TheBackground
     },
     setup() {
       provide(USE_PRESET_KEY, presetComposition());

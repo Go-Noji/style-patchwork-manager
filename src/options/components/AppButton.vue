@@ -34,7 +34,7 @@
       //style 属性に設定する文字列を算出する
       const style = computed(() => invertedColorFlg.value
         ? 'color:'+props.baseColor+';background-color:'+props.keyColor+';border-color:'+props.keyColor+';'
-        : 'color:'+props.keyColor+';background-color:'+props.baseColor+';border-color:'+props.keyColor+';');
+        : 'color:'+props.baseColor+';background-color:transparent;border-color:'+props.keyColor+';');
 
       /**
        * クリックを親へ伝播する
@@ -72,8 +72,7 @@
     background-color: transparent;
     cursor: pointer;
     padding: 10px 20px;
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 14px;
     line-height: 1;
     transition: color, background-color .2s ease-out;
   }

@@ -35,7 +35,7 @@
       </ul>
       <div class="defineButtonWrapper">
         <AppButton
-          keyColor="#212121"
+          keyColor="#000"
           baseColor="#FAFAFA"
           @click-button="createDefineCoordinate"
         ><AppLocalizationText msg="msg_applicable_condition"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>
@@ -58,7 +58,7 @@
       </ul>
       <div class="defineButtonWrapper">
         <AppButton
-          keyColor="#212121"
+          keyColor="#000"
           baseColor="#FAFAFA"
           @click-button="createDefineStyle"
         ><AppLocalizationText msg="msg_applicable_style"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>
@@ -189,7 +189,7 @@
 <style scoped>
   .defineWrapper{
     padding-left: 20px;
-    border-left: #9E9E9E solid 5px;
+    border-left: #9E9E9E solid 2px;
   }
   .defineTitle{
     font-size: 16px;

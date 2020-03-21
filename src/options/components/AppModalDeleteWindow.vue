@@ -12,13 +12,13 @@
     </div>
     <div class="deleteWindowButtonsArea">
       <AppButton
-        keyColor="#607D8B"
+        keyColor="#000"
         baseColor="#FAFAFA"
         class="deleteWindowButton"
         @click-button="clickDelete"
       ><AppLocalizationText msg="msg_delete"></AppLocalizationText></AppButton>
       <AppButton
-        keyColor="#212121"
+        keyColor="#000"
         baseColor="#FAFAFA"
         class="deleteWindowButton"
         @click-button="clickBack"

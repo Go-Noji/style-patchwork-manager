@@ -63,8 +63,6 @@
     margin: 0;
     padding: 0;
     border-left: 1px solid #607D8B;
-    background-color: #FFF;
-    color: #212121;
     &:first-child{
       border-left: 0;
     }
@@ -77,9 +75,10 @@
     padding: 5px 10px;
     cursor: pointer;
     transition: color, background-color .2s ease-out;
+    color: #fafafa;
   }
   .tabButtonCurrent{
-    background-color: #212121;
-    color: #FFF;
+    background-color: #000;
+    font-weight: 700;
   }
 </style>

@@ -69,17 +69,20 @@ a{
 .formFormArea{
   flex-grow: 1;
 }
-.formItemSection{
+.formBlock{
   display: flex;
-  justify-content: space-between;
   margin-top: 5px;
+  &:first-child{
+    margin-top: 0;
+  }
 }
-.formItemSection:first-child{
-  margin-top: 0;
+.formItemSection{
+  margin: 5px 5px 0 5px;
 }
 .formHeader{
-  width: 200px;
-  margin: 0 20px 0 0;
+  margin: 0;
+}
+.formInputArea{
 }
 .formDeleteButtonWrapper{
   width: 60px;

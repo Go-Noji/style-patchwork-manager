@@ -50,6 +50,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 300px;
     margin: 0;
     border: 1px solid #607D8B;
     border-radius: 5px;
@@ -58,7 +59,7 @@
   }
   .tabList{
     list-style-type: none;
-    min-width: 100px;
+    width: 100px;
     margin: 0;
     padding: 0;
     border-left: 1px solid #607D8B;

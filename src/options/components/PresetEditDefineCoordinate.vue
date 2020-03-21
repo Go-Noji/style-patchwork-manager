@@ -16,53 +16,66 @@
       ></button>
     </div>
     <div class="formFormArea">
-      <label class="formItemSection">
-        <p class="formHeader"><AppLocalizationText msg="msg_refine_target"></AppLocalizationText></p>
-        <AppTab
-          :tabs="tabs"
-          :current="coordinate.type"
-          @click-tab="changeType"
-        ></AppTab>
-      </label>
-      <label class="formItemSection">
-        <p
-          v-if="coordinate.type === 'style'"
-          key="styleTitle"
-          class="formHeader"
-        ><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></p>
-        <p
-          v-else-if="coordinate.type === 'augment'"
-          key="augmentTitle"
-          class="formHeader"
-        ><AppLocalizationText msg="msg_html_attribute_name"></AppLocalizationText></p>
-        <p
-          v-else-if="coordinate.type === 'tag'"
-          key="tagTitle"
-          class="formHeader"
-        ><AppLocalizationText msg="msg_html_tag_name"></AppLocalizationText></p>
-        <input
-          class="formInput formInput"
-          :value="coordinate.key"
-          type="text"
-          @change="changeKey"
+      <div class="formBlock">
+        <label class="formItemSection">
+          <p class="formHeader"><AppLocalizationText msg="msg_refine_target"></AppLocalizationText></p>
+          <div class="formInputArea">
+            <AppTab
+              :tabs="tabs"
+              :current="coordinate.type"
+              @click-tab="changeType"
+            ></AppTab>
+          </div>
+        </label>
+      </div>
+      <div class="formBlock">
+        <label class="formItemSection">
+          <p
+            v-if="coordinate.type === 'style'"
+            key="styleTitle"
+            class="formHeader"
+          ><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></p>
+          <p
+            v-else-if="coordinate.type === 'augment'"
+            key="augmentTitle"
+            class="formHeader"
+          ><AppLocalizationText msg="msg_html_attribute_name"></AppLocalizationText></p>
+          <p
+            v-else-if="coordinate.type === 'tag'"
+            key="tagTitle"
+            class="formHeader"
+          ><AppLocalizationText msg="msg_html_tag_name"></AppLocalizationText></p>
+          <div class="formInputArea">
+            <input
+              class="formInput formInput"
+              :value="coordinate.key"
+              type="text"
+              @change="changeKey"
+            >
+          </div>
+        </label>
+        <label
+          v-if="coordinate.type !== 'tag'"
+          class="formItemSection"
         >
-      </label>
-      <label
-        v-if="coordinate.type !== 'tag'"
-        class="formItemSection"
-      >
-        <p
-          v-if="coordinate.type === 'style'"
-          class="formHeader"
-        ><AppLocalizationText msg="msg_value"></AppLocalizationText></p>
-        <span v-else-if="coordinate.type === 'augment'"><AppLocalizationText msg="msg_attribute_name"></AppLocalizationText></span>
-        <input
-          class="formInput formInput"
-          :value="coordinate.values"
-          type="text"
-          @change="changeValue"
-        >
-      </label>
+          <p
+            v-if="coordinate.type === 'style'"
+            class="formHeader"
+          ><AppLocalizationText msg="msg_value"></AppLocalizationText></p>
+          <p
+            v-else-if="coordinate.type === 'augment'"
+            class="formHeader"
+          ><AppLocalizationText msg="msg_attribute_name"></AppLocalizationText></p>
+          <div class="formInputArea">
+            <input
+              class="formInput formInput"
+              :value="coordinate.values"
+              type="text"
+              @change="changeValue"
+            >
+          </div>
+        </label>
+      </div>
     </div>
   </div>
 </template>

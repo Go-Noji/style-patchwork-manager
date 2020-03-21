@@ -16,24 +16,30 @@
       ></button>
     </div>
     <div class="formFormArea">
-      <label class="formItemSection">
-        <p class="formHeader"><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></p>
-        <input
-          class="formInput formInput"
-          :value="data.property"
-          type="text"
-          @change="changeStyleProperty"
-        >
-      </label>
-      <label class="formItemSection">
-        <span class="formHeader"><AppLocalizationText msg="msg_value"></AppLocalizationText></span>
-        <input
-          class="formInput formInput"
-          :value="data.values"
-          type="text"
-          @change="changeStyleValues"
-        >
-      </label>
+      <div class="formBlock">
+        <label class="formItemSection">
+          <p class="formHeader"><AppLocalizationText msg="msg_css_property_name"></AppLocalizationText></p>
+          <div class="formInputArea">
+            <input
+              class="formInput formInput"
+              :value="data.property"
+              type="text"
+              @change="changeStyleProperty"
+            >
+          </div>
+        </label>
+        <label class="formItemSection">
+          <span class="formHeader"><AppLocalizationText msg="msg_value"></AppLocalizationText></span>
+          <div class="formInputArea">
+            <input
+              class="formInput formInput"
+              :value="data.values"
+              type="text"
+              @change="changeStyleValues"
+            >
+          </div>
+        </label>
+      </div>
     </div>
   </div>
 </template>

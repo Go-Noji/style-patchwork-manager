@@ -77,15 +77,29 @@
         </label>
       </div>
     </div>
+    <AppModal
+      v-show="deleteModalFlag"
+      @click-outer="deleteModalFlag = false"
+    >
+      <AppModalDeleteWindow
+        @click-delete="deleteCoordinate"
+        @click-back="deleteModalFlag = false"
+      >
+        <p><AppLocalizationText msg="msg_delete_attention"></AppLocalizationText></p>
+      </AppModalDeleteWindow>
+    </AppModal>
   </div>
 </template>
 
 <script lang="ts">
-  import {createComponent, ref, SetupContext} from "@vue/composition-api";
+  import {createComponent, inject, ref, SetupContext} from "@vue/composition-api";
   import {Coordinate} from "@/settings/interface";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppButton from "@/options/components/AppButton.vue";
   import AppTab from "@/options/components/AppTab.vue";
+  import AppModal from "@/options/components/AppModal.vue";
+  import AppModalDeleteWindow from "@/options/components/AppModalDeleteWindow.vue";
+  import {USE_SETTING} from "@/options/compositions/settingComposition";
 
   type Prop = {
     coordinate: Coordinate,
@@ -96,7 +110,9 @@
     components: {
       AppLocalizationText,
       AppButton,
-      AppTab
+      AppTab,
+      AppModal,
+      AppModalDeleteWindow
     },
     props: {
       coordinate: {
@@ -118,6 +134,17 @@
 
       //削除ボタンにホバーしているかどうか
       const isHover = ref(false);
+
+      //削除モーダルの表示フラグ
+      const deleteModalFlag = ref(false);
+
+      //設定用の composition function を用意
+      const setting = inject(USE_SETTING);
+
+      //composition function の絞り込み
+      if (setting === undefined) {
+        return;
+      }
 
       /**
        * ホバーを検知
@@ -181,6 +208,16 @@
        * 削除を親に伝播
        */
       const deleteCoordinate = () => {
+        //削除モーダルが表示されておらず、かつ確認フラグが true ならモーダルを表示して終了
+        if ( ! deleteModalFlag.value && setting.state.deleteConfirm) {
+          deleteModalFlag.value = true;
+          return;
+        }
+
+        //モーダルが表示されていたら非表示にする
+        deleteModalFlag.value = false;
+
+        //削除実行
         context.emit('change-coordinate', {
           coordinate: null,
           index: prop.index
@@ -188,7 +225,7 @@
       };
 
       //テンプレートへ伝播
-      return {tabs, isHover, hoverEnter, hoverLeave, changeType, changeKey, changeValue, deleteCoordinate};
+      return {tabs, isHover, deleteModalFlag, hoverEnter, hoverLeave, changeType, changeKey, changeValue, deleteCoordinate};
     }
   })
 </script>

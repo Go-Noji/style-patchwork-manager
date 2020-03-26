@@ -41,14 +41,28 @@
         </a>
       </p>
     </div>
+    <AppModal
+      v-show="deleteModalFlag"
+      @click-outer="deleteModalFlag = false"
+    >
+      <AppModalDeleteWindow
+        @click-delete="deletePreset"
+        @click-back="deleteModalFlag = false"
+      >
+        <p><AppLocalizationText msg="msg_delete_attention"></AppLocalizationText></p>
+      </AppModalDeleteWindow>
+    </AppModal>
   </section>
 </template>
 
 <script lang="ts">
-  import {computed, createComponent, ref, SetupContext} from "@vue/composition-api";
+  import {computed, createComponent, inject, ref, SetupContext} from "@vue/composition-api";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
+  import AppModal from "@/options/components/AppModal.vue";
+  import AppModalDeleteWindow from "@/options/components/AppModalDeleteWindow.vue";
   import {COLORS} from "@/settings/settings";
   import {isColorKeys} from "@/settings/interface";
+  import {USE_SETTING} from "@/options/compositions/settingComposition";
 
   type Props = {
     index: number,
@@ -58,7 +72,7 @@
   };
 
   export default createComponent({
-    components: {AppLocalizationText},
+    components: {AppLocalizationText, AppModal, AppModalDeleteWindow},
     props: {
       index: {
         type: Number,
@@ -81,6 +95,17 @@
       //削除ボタンにホバーしているかどうか
       const isHover = ref(false);
 
+      //削除モーダルの表示フラグ
+      const deleteModalFlag = ref(false);
+
+      //設定用の composition function を用意
+      const setting = inject(USE_SETTING);
+
+      //composition function の絞り込み
+      if (setting === undefined) {
+        return;
+      }
+
       /**
        * ホバーを検知
        */
@@ -99,6 +124,16 @@
        * 削除イベントを親に emit する
        */
       const deletePreset = () => {
+        //削除モーダルが表示されておらず、かつ確認フラグが true ならモーダルを表示して終了
+        if ( ! deleteModalFlag.value && setting.state.deleteConfirm) {
+          deleteModalFlag.value = true;
+          return;
+        }
+
+        //モーダルが表示されていたら非表示にする
+        deleteModalFlag.value = false;
+
+        //削除実行
         setupContext.emit('delete-preset', props.index);
       };
 
@@ -110,7 +145,7 @@
       });
 
       //prop を伝播
-      return {isHover, hoverEnter, hoverLeave, deletePreset, colorCode};
+      return {isHover, deleteModalFlag, hoverEnter, hoverLeave, deletePreset, colorCode};
     }
   });
 </script>

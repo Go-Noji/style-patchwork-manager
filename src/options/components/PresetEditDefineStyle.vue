@@ -41,14 +41,28 @@
         </label>
       </div>
     </div>
+    <AppModal
+      v-show="deleteModalFlag"
+      @click-outer="deleteModalFlag = false"
+    >
+      <AppModalDeleteWindow
+        @click-delete="deleteStyle"
+        @click-back="deleteModalFlag = false"
+      >
+        <p><AppLocalizationText msg="msg_delete_attention"></AppLocalizationText></p>
+      </AppModalDeleteWindow>
+    </AppModal>
   </div>
 </template>
 
 <script lang="ts">
-  import {createComponent, ref, SetupContext} from "@vue/composition-api";
+  import {createComponent, inject, ref, SetupContext} from "@vue/composition-api";
   import {Style} from "@/settings/interface";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppButton from "@/options/components/AppButton.vue";
+  import AppModal from "@/options/components/AppModal.vue";
+  import AppModalDeleteWindow from "@/options/components/AppModalDeleteWindow.vue";
+  import {USE_SETTING} from "@/options/compositions/settingComposition";
 
   type Prop = {
     data: Style,
@@ -58,7 +72,9 @@
   export default createComponent({
     components: {
       AppLocalizationText,
-      AppButton
+      AppButton,
+      AppModal,
+      AppModalDeleteWindow
     },
     props: {
       data: {
@@ -72,6 +88,17 @@
     setup(prop: Prop, context: SetupContext) {
       //削除ボタンにホバーしているかどうか
       const isHover = ref(false);
+
+      //削除モーダルの表示フラグ
+      const deleteModalFlag = ref(false);
+
+      //設定用の composition function を用意
+      const setting = inject(USE_SETTING);
+
+      //composition function の絞り込み
+      if (setting === undefined) {
+        return;
+      }
 
       /**
        * ホバーを検知
@@ -119,6 +146,16 @@
        * 削除を親に伝播
        */
       const deleteStyle = () => {
+        //削除モーダルが表示されておらず、かつ確認フラグが true ならモーダルを表示して終了
+        if ( ! deleteModalFlag.value && setting.state.deleteConfirm) {
+          deleteModalFlag.value = true;
+          return;
+        }
+
+        //モーダルが表示されていたら非表示にする
+        deleteModalFlag.value = false;
+
+        //削除実行
         context.emit('change-style', {
           style: null,
           index: prop.index
@@ -126,7 +163,7 @@
       };
 
       //テンプレートへ伝播
-      return {isHover, hoverEnter, hoverLeave, changeStyleProperty, changeStyleValues, deleteStyle};
+      return {isHover, deleteModalFlag, hoverEnter, hoverLeave, changeStyleProperty, changeStyleValues, deleteStyle};
     }
   })
 </script>

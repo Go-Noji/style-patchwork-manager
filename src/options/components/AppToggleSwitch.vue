@@ -88,7 +88,7 @@
     transition: left .2s ease-out;
   }
   .toggleSwitchWrapperEnable{
-    background-color: #000;
+    background-color: #607D8B;
     color: #fafafa;
   }
   .toggleSwitchTextEnable{

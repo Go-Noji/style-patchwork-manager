@@ -6,7 +6,7 @@
     ></div>
     <div
       class="backgroundFront"
-      :style="'background: linear-gradient('+deg+', #000 10%, transparent)'"
+      :style="'background: linear-gradient('+deg+', #607D8B 10%, transparent)'"
     ></div>
   </div>
 </template>

@@ -35,7 +35,7 @@
       </ul>
       <div class="defineButtonWrapper">
         <AppButton
-          keyColor="#000"
+          keyColor="#607D8B"
           baseColor="#FAFAFA"
           @click-button="createDefineCoordinate"
         ><AppLocalizationText msg="msg_applicable_condition"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>
@@ -58,7 +58,7 @@
       </ul>
       <div class="defineButtonWrapper">
         <AppButton
-          keyColor="#000"
+          keyColor="#607D8B"
           baseColor="#FAFAFA"
           @click-button="createDefineStyle"
         ><AppLocalizationText msg="msg_applicable_style"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>

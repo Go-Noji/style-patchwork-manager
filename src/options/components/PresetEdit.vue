@@ -80,7 +80,7 @@
         </ul>
         <div class="editButtonWrapper">
           <AppButton
-            keyColor="#000"
+            keyColor="#607D8B"
             baseColor="#FAFAFA"
             @click-button="createDefine"
           ><AppLocalizationText msg="msg_definition"></AppLocalizationText>&nbsp;<AppLocalizationText msg="msg_add"></AppLocalizationText></AppButton>

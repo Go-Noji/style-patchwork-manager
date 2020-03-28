@@ -38,7 +38,7 @@
   "msg_delete": {"message": "Remove"},
   "msg_delete_attention": {"message": "Do you really want to delete this?"},
   "msg_delete_confirm_change": {"message": "Don't show this modal again"},
-  "msg_delete_confirm_setting": {"message": "Do not show confirmation modal on delete operation"},
+  "msg_delete_confirm_setting": {"message": "Do show confirmation modal on delete operation"},
   "msg_back": {"message": "Back"},
   "msg_apply_all_sites": {"message": "Apply to all sites."},
   "msg_to_destination_site": {"message": "To the destination site."},

@@ -49,7 +49,7 @@
           <p><AppLocalizationText msg="msg_delete_confirm_setting"></AppLocalizationText></p>
           <div>
             <AppToggleSwitch
-              :enable=" ! state.deleteConfirm"
+              :enable="state.deleteConfirm"
               :onText="'Yes'"
               :offText="'No'"
               @click-switch="changeDeleteConfirm"

@@ -38,7 +38,7 @@
   "msg_delete": {"message": "削除"},
   "msg_delete_attention": {"message": "本当に削除しますか？"},
   "msg_delete_confirm_change": {"message": "次回からこのモーダルを表示しない"},
-  "msg_delete_confirm_setting": {"message": "削除操作に確認モーダルを表示しない"},
+  "msg_delete_confirm_setting": {"message": "削除操作時に確認モーダルを表示する"},
   "msg_back": {"message": "戻る"},
   "msg_apply_all_sites": {"message": "全てのサイトへ適用"},
   "msg_to_destination_site": {"message": "設定先のサイトへ"},

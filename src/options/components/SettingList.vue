@@ -10,12 +10,12 @@
           <div>
             <label>
               <span><AppLocalizationText msg="msg_enable"></AppLocalizationText></span>
-              <input
-                v-model="state.enable"
-                type="checkbox"
-                name="enable"
-                @input="changeEnableData"
-              >
+              <AppToggleSwitch
+                :enable="state.enable"
+                :onText="'ON'"
+                :offText="'Off'"
+                @click-switch="changeEnableData"
+              ></AppToggleSwitch>
             </label>
           </div>
         </li>
@@ -23,26 +23,11 @@
           <p><AppLocalizationText msg="msg_storage"></AppLocalizationText></p>
           <div>
             <AppLocalizationText msg="msg_storage_attentions"></AppLocalizationText>
-            <label>
-              <span>sync</span>
-              <input
-                v-model="state.storage"
-                type="radio"
-                name="storage"
-                value="sync"
-                @input="changeStorageData"
-              >
-            </label>
-            <label>
-              <span>local</span>
-              <input
-                v-model="state.storage"
-                type="radio"
-                name="storage"
-                value="local"
-                @input="changeStorageData"
-              >
-            </label>
+            <AppTab
+              :tabs="{sync: 'sync', local: 'local'}"
+              :current="state.storage"
+              @click-tab="changeStorageData"
+            ></AppTab>
           </div>
         </li>
         <li>
@@ -88,14 +73,22 @@
           <p><AppLocalizationText msg="msg_export_settings"></AppLocalizationText></p>
           <div>
             <p><AppLocalizationText msg="msg_export_description"></AppLocalizationText></p>
-            <p><button @click="exportSettingJson"><AppLocalizationText msg="msg_export"></AppLocalizationText></button></p>
+            <p><AppButton
+              keyColor="#607D8B"
+              baseColor="#FAFAFA"
+              @click-button="exportSettingJson"
+            ><AppLocalizationText msg="msg_export"></AppLocalizationText></AppButton></p>
           </div>
         </li>
         <li>
           <p><AppLocalizationText msg="msg_import_settings"></AppLocalizationText></p>
           <div>
             <AppLocalizationText msg="msg_import_description"></AppLocalizationText>
-            <p><input type="file" @change="importSettingJson"></p>
+            <p><AppFileInput
+              keyColor="#607D8B"
+              baseColor="#FAFAFA"
+              @change-file="importSettingJson"
+            ><AppLocalizationText msg="msg_import"></AppLocalizationText></AppFileInput></p>
           </div>
         </li>
       </ul>
@@ -114,9 +107,12 @@
   import {STORAGE_LIMIT_SYNC, STORAGE_LIMIT_LOCAL} from "@/settings/settings";
   import AppLocalizationText from "@/options/components/AppLocalizationText.vue";
   import AppToggleSwitch from "@/options/components/AppToggleSwitch.vue";
+  import AppButton from "@/options/components/AppButton.vue";
+  import AppFileInput from "@/options/components/AppFileInput.vue";
+  import AppTab from "@/options/components/AppTab.vue";
 
   export default createComponent({
-    components: {AppLocalizationText, AppToggleSwitch},
+    components: {AppLocalizationText, AppToggleSwitch, AppButton, AppFileInput, AppTab},
     setup() {
       //プリセット用の composition function を用意
       const settting = inject(USE_SETTING);
@@ -133,33 +129,22 @@
        * storage を変更する
        * @param event
        */
-      const changeStorageData = async (event: Event) => {
-        //情報の提供元が input でなければ何もしない
-        if ( ! (event.target instanceof HTMLInputElement)) {
-          return;
-        }
-
+      const changeStorageData = async (type: string) => {
         //提供された値が storage の型にそぐわない場合は何もしない
-        if (event.target.value !== 'sync' && event.target.value !== 'local') {
+        if (type !== 'sync' && type !== 'local') {
           return;
         }
 
         //更新を行う
-        await settting.changeStorage(event.target.value);
+        await settting.changeStorage(type);
       };
 
       /**
        * enable を変更する
        * @param event
        */
-      const changeEnableData = async (event: Event) => {
-        //情報の提供元が input でなければ何もしない
-        if ( ! (event.target instanceof HTMLInputElement)) {
-          return;
-        }
-
-        //更新を行う
-        await settting.changeEnable(event.target.checked);
+      const changeEnableData = async () => {
+        await settting.changeEnable( ! settting.state.enable);
       };
 
       /**
@@ -201,17 +186,12 @@
       /**
        * ファイルを読み込んで設定を適用する
        */
-      const importSettingJson = async (event: Event) => {
-        //情報の提供元が input でなければ何もしない
-        if ( ! (event.target instanceof HTMLInputElement) || event.target.files === null || event.target.files.length < 1) {
-          return;
-        }
-
+      const importSettingJson = async (file: File) => {
         //ファイル読み込みオブジェクトを用意
         const reader = new FileReader();
 
         //ファイルを読み込む
-        await reader.readAsText(event.target.files[0]);
+        await reader.readAsText(file);
 
         //ファイルが読み込めたらインポートを開始する
         reader.addEventListener('load', () => {
@@ -228,10 +208,10 @@
       //状態を読み込む
       onMounted(() => {
         settting.getSettings()
-        .then(() => {
-          //読み込みが正常に完了
-          isLoaded.value = true;
-        });
+          .then(() => {
+            //読み込みが正常に完了
+            isLoaded.value = true;
+          });
       });
 
       //テンプレートに伝播

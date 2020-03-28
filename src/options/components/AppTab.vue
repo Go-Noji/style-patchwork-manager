@@ -47,10 +47,9 @@
 
 <style lang="scss" scoped>
   .tabWrapper{
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 300px;
     margin: 0;
     border: 1px solid #607D8B;
     border-radius: 5px;

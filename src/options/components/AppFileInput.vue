@@ -1,11 +1,17 @@
 <template>
-  <button
+  <label
     :style="style"
-    class="appButton"
-    @click="clickButton"
+    class="appFileInputLabel"
     @mouseenter="invertedColor"
     @mouseleave="undoColor"
-  ><slot></slot></button>
+  >
+    <input
+      class="appFileInput"
+      type="file"
+      @change="changeFile"
+    >
+    <slot></slot>
+  </label>
 </template>
 
 <script lang="ts">
@@ -38,18 +44,26 @@
       /**
        * クリックを親へ伝播する
        */
-      const clickButton = () => {
-        context.emit('click-button');
+      const changeFile = (event: Event) => {
+        //情報の提供元が input でなければ何もしない
+        if ( ! (event.target instanceof HTMLInputElement) || event.target.files === null || event.target.files.length < 1) {
+          return;
+        }
+
+        //親へファイル情報ごと伝播
+        context.emit('change-file', event.target.files[0]);
       };
 
       //伝播
-      return {clickButton, style, invertedColor, undoColor};
+      return {changeFile, style, invertedColor, undoColor};
     }
   })
 </script>
 
 <style lang="scss" scoped>
-  .appButton{
+  .appFileInputLabel{
+    display: block;
+    max-width: 128px;
     appearance: none;
     border-width: 2px;
     border-style: solid;
@@ -60,5 +74,8 @@
     font-size: 14px;
     line-height: 1;
     transition: color, background-color .2s ease-out;
+  }
+  .appFileInput{
+    display: none;
   }
 </style>

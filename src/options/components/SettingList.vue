@@ -4,34 +4,35 @@
       <h2><AppLocalizationText msg="msg_change_setting"></AppLocalizationText></h2>
       <ul
         v-if="isLoaded"
+        class="settingBox"
       >
-        <li>
-          <p>ON / OFF</p>
+        <li class="settingList">
+          <h3 class="settingTitle">ON / OFF</h3>
           <div>
             <label>
-              <span><AppLocalizationText msg="msg_enable"></AppLocalizationText></span>
               <AppToggleSwitch
                 :enable="state.enable"
                 :onText="'ON'"
                 :offText="'Off'"
                 @click-switch="changeEnableData"
               ></AppToggleSwitch>
+              <p><AppLocalizationText msg="msg_enable"></AppLocalizationText></p>
             </label>
           </div>
         </li>
-        <li>
+        <li class="settingList">
           <p><AppLocalizationText msg="msg_storage"></AppLocalizationText></p>
           <div>
-            <AppLocalizationText msg="msg_storage_attentions"></AppLocalizationText>
             <AppTab
               :tabs="{sync: 'sync', local: 'local'}"
               :current="state.storage"
               @click-tab="changeStorageData"
             ></AppTab>
+            <p><AppLocalizationText msg="msg_storage_attentions"></AppLocalizationText></p>
           </div>
         </li>
-        <li>
-          <p><AppLocalizationText msg="msg_delete_confirm_setting"></AppLocalizationText></p>
+        <li class="settingList">
+          <h3 class="settingTitle"><AppLocalizationText msg="msg_delete_confirm_setting"></AppLocalizationText></h3>
           <div>
             <AppToggleSwitch
               :enable="state.deleteConfirm"
@@ -49,28 +50,10 @@
       </div>
     </section>
     <section>
-      <h2><AppLocalizationText msg="msg_information"></AppLocalizationText></h2>
-      <ul>
-        <li>
-          <p><AppLocalizationText msg="msg_version"></AppLocalizationText></p>
-          <div>
-            <p>{{state.version}}</p>
-          </div>
-        </li>
-        <li>
-          <p><AppLocalizationText msg="msg_used_byte"></AppLocalizationText></p>
-          <div>
-            <p><AppLocalizationText msg="msg_using_byte"></AppLocalizationText>: {{new Intl.NumberFormat().format(state.bytes)}}</p>
-            <p><AppLocalizationText msg="msg_remaining_byte"></AppLocalizationText>: {{new Intl.NumberFormat().format(remainingAvailableBytes)}}</p>
-          </div>
-        </li>
-      </ul>
-    </section>
-    <section>
       <h2><AppLocalizationText msg="msg_backup"></AppLocalizationText></h2>
-      <ul>
-        <li>
-          <p><AppLocalizationText msg="msg_export_settings"></AppLocalizationText></p>
+      <ul class="settingBox">
+        <li class="settingList">
+          <h3 class="settingTitle"><AppLocalizationText msg="msg_export_settings"></AppLocalizationText></h3>
           <div>
             <p><AppLocalizationText msg="msg_export_description"></AppLocalizationText></p>
             <p><AppButton
@@ -80,8 +63,8 @@
             ><AppLocalizationText msg="msg_export"></AppLocalizationText></AppButton></p>
           </div>
         </li>
-        <li>
-          <p><AppLocalizationText msg="msg_import_settings"></AppLocalizationText></p>
+        <li class="settingList">
+          <h3 class="settingTitle"><AppLocalizationText msg="msg_import_settings"></AppLocalizationText></h3>
           <div>
             <AppLocalizationText msg="msg_import_description"></AppLocalizationText>
             <p><AppFileInput
@@ -89,6 +72,24 @@
               baseColor="#FAFAFA"
               @change-file="importSettingJson"
             ><AppLocalizationText msg="msg_import"></AppLocalizationText></AppFileInput></p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h2><AppLocalizationText msg="msg_information"></AppLocalizationText></h2>
+      <ul class="settingBox">
+        <li class="settingList">
+          <h3 class="settingTitle"><AppLocalizationText msg="msg_version"></AppLocalizationText></h3>
+          <div>
+            <p>{{state.version}}</p>
+          </div>
+        </li>
+        <li class="settingList">
+          <h3 class="settingTitle"><AppLocalizationText msg="msg_used_byte"></AppLocalizationText></h3>
+          <div>
+            <p><AppLocalizationText msg="msg_using_byte"></AppLocalizationText>: {{new Intl.NumberFormat().format(state.bytes)}}</p>
+            <p><AppLocalizationText msg="msg_remaining_byte"></AppLocalizationText>: {{new Intl.NumberFormat().format(remainingAvailableBytes)}}</p>
           </div>
         </li>
       </ul>
@@ -220,6 +221,22 @@
   })
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .settingBox{
+    margin: 10px 0 60px 0;
+    padding: 0;
+  }
+  .settingList{
+    margin: 15px 0 0 0;
+    border-top: #607D8B solid 1px;
+    padding: 15px 0 0 0;
+    list-style-type: none;
+    &:first-child{
+      border-top: 0;
+    }
+  }
+  .settingTitle{
+    font-size: 18px;
+    font-weight: 700;
+  }
 </style>

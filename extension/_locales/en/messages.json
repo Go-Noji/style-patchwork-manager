@@ -19,7 +19,7 @@
   "msg_attribute_name": {"message": "attribute name"},
   "msg_loading": {"message": "Loading..."},
   "msg_change_setting": {"message": "Change settings"},
-  "msg_enable": {"message": "Make it work"},
+  "msg_enable": {"message": "When turned off, no style is applied."},
   "msg_storage": {"message": "Data storage location"},
   "msg_storage_attentions": {"message": "It is recommended to make a backup after making a backup from \"Export settings\" below.\n\"Sync\" saves less data than \"Local\" instead of syncing settings to all Chrome.\n\"Local\" saves more data than \"sync\", but only applies to this Chrome."},
   "msg_information": {"message": "Information"},

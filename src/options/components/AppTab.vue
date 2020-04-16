@@ -62,6 +62,7 @@
     margin: 0;
     padding: 0;
     border-left: 1px solid #607D8B;
+    line-height: 0;
     &:first-child{
       border-left: 0;
     }

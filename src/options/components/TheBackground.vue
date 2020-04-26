@@ -2,11 +2,11 @@
   <div class="background">
     <div
       class="backgroundBack"
-      :style="'background-color: '+colorCode"
+      :style="'background-color: '+colorSetting.front"
     ></div>
     <div
       class="backgroundFront"
-      :style="'background: linear-gradient('+deg+', '+getKindColorCode(colorCode)+' 10%, transparent)'"
+      :style="'background: linear-gradient('+colorSetting.deg+', '+colorSetting.back+' 10%, '+colorSetting.front+')'"
     ></div>
   </div>
 </template>
@@ -27,84 +27,96 @@
         return;
       }
 
-      //rga からカラーホイールの角度を算出する
-      const getColorRadian = (red: number, green: number, blue: number): number => {
-        //rga のいずれかに 0 未満 or 255 より大きい数が存在したら 0 を返す
-        if ([red, green, blue].some(color => color < 0 || 255 < color)) {
-          return 0;
+      /**
+       * rgb 形式のカラーコードを hsl 形式に変換して返す
+       * @param red
+       * @param green
+       * @param blue
+       */
+      const getHSL = (red: number, green: number, blue: number): {hue: number, saturation: number, lightness: number} => {
+        //三食のうち一つでも 0 ~ 255 の範囲から外れていたら 0 0 0 を返す
+        if ([red, green, blue].some(value => value > 255 || 0 > value)) {
+          return {hue: 0, saturation: 0, lightness: 0};
         }
 
-        //Object in Array に成型して降順ソート
-        const sets = [{color: 'red', quantity: red}, {color: 'green', quantity: green}, {color: 'blue', quantity: blue}].sort((a, b) => b.quantity - a.quantity);
+        //各色の最大値と最小値を求める
+        const max = Math.max(red, green, blue);
+        const min = Math.min(red, green, blue);
 
-        //増加減角度の算出
-        const radius = 60 * ((sets[0].quantity - (sets[1].quantity - sets[2].quantity)) / sets[0].quantity);
+        //輝度を求める
+        const lightness = Math.round((max + min) / 2 / 255 * 100);
+
+        //彩度を求める
+        const saturation = (max + min) / 2 > 217
+          ? Math.floor((max - min) / (510 - max - min) * 100)
+          : Math.floor((max - min) / (max + min) * 100);
+
+        //色相を求める
+        //無彩色
+        let hue = 0;
 
         //赤系
-        if (sets[0].color === 'red') {
-          //青より緑の割合が多い場合は 0 に加算、緑より青の割合が多い場合は 360 から減算
-          return sets[1].color === 'green'
-            ? 0 + radius
-            : 360 - radius;
+        if (red > green && red > blue) {
+          hue = 60 * ((green - blue) / (max - min));
         }
 
         //緑系
-        else if (sets[0].color === 'green') {
-          //赤より青の割合が多い場合は 120 に加算、青より赤の割合が多い場合は 120 から減算
-          return sets[1].color === 'blue'
-            ? 120 + radius
-            : 120 - radius;
+        else if (green > red && green > blue) {
+          hue = 60 * ((blue - red) / (max - min)) + 120;
         }
 
         //青系
-        //緑より赤の割合が多い場合は 240 に加算、赤より緑の割合が多い場合は 240 から減算
-        return sets[1].color === 'red'
-          ? 240 + radius
-          : 240 - radius;
-      }
-
-      //rga からカラーホイール中心からの距離を 0 ~ 1 の範囲で返す
-      const getColorRadius = (red: number, green: number, blue: number): number => {
-        //rga のいずれかに 0 未満 or 255 より大きい数が存在したら 0 を返す
-        if ([red, green, blue].some(color => color < 0 || 255 < color)) {
-          return 0;
+        else if (blue > red && blue > green) {
+          hue = 60 * ((red - green) / (max - min)) + 240;
         }
 
-        //全てを足し、765 との差を割合として算出
-        return (765 - (red + green + blue)) / 765;
+        //返す
+        return {hue, saturation, lightness};
       };
 
-      //角度、中心からの距離、一番強い色の値から rgb を返す
-      const getColor = (radian: number, radius: number, max: number): [number, number, number] => {
-        //radian が 0 未満 or 360 以上 or max が 0 未満 1 以上だったら [0, 0, 0] を返す
-        if (radian < 0 || 360 < radian || radius < 0 || 1 < radius) {
-          return [0, 0, 0];
+      /**
+       * hsl 形式のカラーコードを rba 形式に変換して返す
+       * @param hue
+       * @param saturation
+       * @param lightness
+       */
+      const getRGB = (hue: number, saturation: number, lightness: number): {red: number, green: number, blue: number} => {
+        //彩度 or 輝度 が 0 ~ 100 の範囲外だったら 0 0 0 を返す
+        if (saturation < 0 || 100 < saturation || lightness < 0 || 100 < lightness) {
+          return {red: 0, green: 0, blue: 0};
         }
 
-        //300 <= radian and radian <= 359 or 0 <= radian and radian <= 60 は赤系
-        if ((300 <= radian && radian <= 359) || (0 <= radian && radian <= 60)) {
-          //300 <= radian and radian <= 359 なら青寄り、0 <= radian and radian <= 60　なら緑寄り
-          return 300 <= radian && radian <= 359
-            ? [max, max * radius, (max - (max * (360 - radian) / 60)) * radius]
-            : [max, (max - (max * (radian === 0 ? 0 : 60 - radian) / 60)) * radius, max * radius];
-        }
+        //hue の範囲を 0 ~ 359 へ補正する
+        hue = Math.round(hue - (Math.floor(hue / 360) * 360));
 
-        //60 <= radian and radian <= 180 は緑系
-        else if (60 <= radian && radian <= 180) {
-          //120 <= radian なら青寄り、radian <= 120　なら赤寄り
-          return 120 <= radian
-            ? [max * radius, max, (max - (max * (180 - radian) / 60)) * radius]
-            : [(max - (max * (120 - radian) / 60)) * radius, max, max * radius];
-        }
+        //rgb の最大値・最小値を求める
+        const max = lightness < 50
+          ? Math.round(2.55 * (lightness + lightness * (saturation / 100)))
+          : Math.round(2.55 * (lightness + (100 - lightness) * (saturation / 100)));
+        const min = lightness < 50
+          ? Math.round(2.55 * (lightness - lightness * (saturation / 100)))
+          : Math.round(2.55 * (lightness - (100 - lightness) * (saturation / 100)));
 
-        //180 <= radius and radius <= 300 は青系
-        //240 <= radian なら赤寄り、radian <= 240　なら緑寄り
-        return 120 <= radian
-          ? [(max - (max * (240 - radian) / 60)) * radius, max * radius, max]
-          : [max * radius, (max - (max * (240 - radian) / 60)) * radius, max];
+        //60 刻みで赤緑青の計算方法を分ける
+        if (0 <= hue && hue <= 60) {
+          return {red: max, green: Math.round((hue / 60) * (max - min) + min), blue: min};
+        }
+        else if (61 <= hue && hue <= 120) {
+          return {red: Math.round(((120 - hue) / 60) * (max - min) + min), green: max, blue: min};
+        }
+        else if (121 <= hue && hue <= 180) {
+          return {red: min, green: max, blue: Math.round(((hue - 120) / 60) * (max - min) + min)};
+        }
+        else if (181 <= hue && hue <= 240) {
+          return {red: min, green: Math.round(((240 - hue) / 60) * (max - min) + min), blue: max};
+        }
+        else if (241 <= hue && hue <= 300) {
+          return {red: Math.round(((hue - 240) / 60) * (max - min) + min), green: min, blue: max};
+        }
+        return {red: max, green: min, blue: Math.round(((360 - hue) / 60) * (max - min) + min)};
       };
 
-      //色相環で +45 度、外側に 0.3 離した色を算出する
+      //16 進数カラーコードを受け取り、hls で h に +120, s に -30, l に +30 した色を 16 進数カラーコードで返す
       const getKindColorCode = (code: string): string => {
         //code から # を削除し、小文字化
         code = code.replace('#', '').toLowerCase();
@@ -122,38 +134,25 @@
           return '#000';
         }
 
-        //各桁を RGB (0 ~ 255)に分ける
-        const red = parseInt(code.substr(0, 2), 16);
-        const green = parseInt(code.substr(2, 2), 16);
-        const blue = parseInt(code.substr(4, 2), 16);
+        //カラーコードを HSL 形式に変換したものを用意
+        const hsl = getHSL(parseInt(code.substr(0, 2), 16), parseInt(code.substr(2, 2), 16), parseInt(code.substr(4, 2), 16));
 
-        //#ff0000 を 0 度としたときの角度、距離を求める
-        let radian = getColorRadian(red, green, blue);
-        let radius = getColorRadius(red, green, blue);
-
-        //120 度 +、0.5 中心から離した色を算出
-        radian = radian > 240
-          ? radian + 120 - 360
-          : radian + 120;
-        radius = radius > 0.5
-          ? 0
-          : radius + 0.5;
-
-        //ズラした色を算出
-        const rgb = getColor(radian, radius, Math.max(red, green, blue));
+        //ずらした色を返す
+        const rgb = getRGB(hsl.hue + 120, hsl.saturation < 30 ? 0 : hsl.saturation - 30, hsl.lightness > 70 ? 100 : hsl.lightness + 30);
 
         //合成して返す
-        const r = Math.floor(rgb[0]).toString(16);
-        const g = Math.floor(rgb[1]).toString(16);
-        const b = Math.floor(rgb[2]).toString(16);
-        return '#'+(r.length < 2 ? '0'+r : r)+(g.length < 2 ? '0'+g : g)+(b.length < 2 ? '0'+b : b);
+        return '#'+rgb.red.toString(16).padStart(2, '0')+rgb.green.toString(16).padStart(2, '0')+rgb.blue.toString(16).padStart(2, '0');
       };
 
       //現在表示すべき色を返す
-      const colorCode = computed(() => {
+      const colorSetting = computed(() => {
         //設定画面は特別な背景色を返す
         if (context.root.$route.path.match(/^.*\/setting$/)) {
-          return '#263238';
+          return {
+            front: '#263238',
+            back: getKindColorCode('#263238'),
+            deg: String(Math.random() * 361)+'deg'
+          };
         }
 
         //プリセットの対象インデックス
@@ -161,7 +160,11 @@
 
         //プリセットが見つからなかったらデフォルト色を返す
         if (index === -1 || store.state.presets[index] === undefined) {
-          return '#9E9E9E';
+          return {
+            front: '#9E9E9E',
+            back: getKindColorCode('#9E9E9E'),
+            deg: String(Math.random() * 361)+'deg'
+          };
         }
 
         //現在のプリセットが示す色名を取得
@@ -169,15 +172,20 @@
 
         //色名が以上ならデフォルト色を返す
         if ( ! isColorKeys(color) || typeof color !== 'string') {
-          return '#9E9E9E'
+          return {
+            front: '#9E9E9E',
+            back: getKindColorCode('#9E9E9E'),
+            deg: String(Math.random() * 361)+'deg'
+          };
         }
 
         //プリセットに設定されている色を返す
-        return COLORS[color];
+        return {
+          front: COLORS[color],
+          back: getKindColorCode(String(COLORS[color])),
+          deg: String(Math.random() * 361)+'deg'
+        };
       });
-
-      //角度をランダムに作成する
-      const deg = computed(() => context.root.$route.params['index'] ? String(Math.random() * 361)+'deg' : String(Math.random() * 151)+'deg');
 
       //データを読み込む
       onMounted(() => {
@@ -185,7 +193,7 @@
       });
 
       //データの伝播
-      return {colorCode, deg, getKindColorCode};
+      return {colorSetting};
     }
   });
 </script>
